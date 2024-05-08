@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "discord.js": "^14.15.2"
+  },
+  "name": "legendsmc-bot",
+  "version": "1.0.0",
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vBagieta/LEGENDSMC-BOT.git"
+  },
+  "author": "vbagieta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vBagieta/LEGENDSMC-BOT/issues"
+  },
+  "homepage": "https://github.com/vBagieta/LEGENDSMC-BOT#readme",
+  "description": ""
+}
