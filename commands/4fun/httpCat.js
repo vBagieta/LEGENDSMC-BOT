@@ -87,7 +87,6 @@ module.exports = {
             '599',
         ]
 
-
         const random = Math.floor(Math.random() * httpCodes.length);
         const pickedCode = httpCodes[random];
 
