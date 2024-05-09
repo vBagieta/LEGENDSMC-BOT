@@ -16,7 +16,7 @@ module.exports = {
             `https://api.github.com/repos/vBagieta/LEGENDSMC-BOT/commits`
         );
         const data = await response.json();
-        const latestCommits = data.slice(0, commitsCount || 5); // Use the specified count, default to 5 if not provided or invalid
+        const latestCommits = data.slice(0, commitsCount || 5);
 
         const formatCommit = function(commit, index, total) {
             const commitDateTimestamp = time(new Date(commit.commit.author.date), TimestampStyles.RelativeTime)
