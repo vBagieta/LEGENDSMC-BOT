@@ -4,15 +4,15 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('help')
 		.setDescription('Wyświetl listę komend.')
-        .addBooleanOption(option => option.setName('ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 	async execute(interaction) {
 
-        const ephemeral = interaction.options.getBoolean('ephemeral');
+        const ephemeral = interaction.options.getBoolean('notephemeral');
 
         if (ephemeral == null) {
             var ephemeralBoolean = true;
         } else {
-            var ephemeralBoolean = ephemeral
+            var ephemeralBoolean = !ephemeral
         }
 
         const helpEmbed = new EmbedBuilder()

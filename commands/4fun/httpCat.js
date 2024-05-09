@@ -1,19 +1,18 @@
 const { SlashCommandBuilder, EmbedBuilder, codeBlock } = require('discord.js');
-const { fetch } = require('undici');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('httpcat')
         .setDescription('Wyświetl losowe zdjęcie kota, które odpowiada błędu HTTP.')
-        .addBooleanOption(option => option.setName('ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
     async execute(interaction) {
 
-        const ephemeral = interaction.options.getBoolean('ephemeral');
+        const ephemeral = interaction.options.getBoolean('notephemeral');
 
         if (ephemeral == null) {
             var ephemeralBoolean = true;
         } else {
-            var ephemeralBoolean = ephemeral
+            var ephemeralBoolean = !ephemeral
         }
 
         const httpCodes = [
@@ -98,21 +97,6 @@ module.exports = {
         const pickedCode = httpCodes[random];
 
         const httpCatImage = `https://http.cat/${pickedCode}`
-
-        try {
-            const response = await fetch(`https://http.cat/${pickedCode}`)
-        } catch (error) {
-            const embed = new EmbedBuilder()
-                .setDescription(`Błąd podczas próby połączenia z API.`)
-                .addFields(
-                    { name: "ERROR", value: codeBlock(`${error}`) }
-                )
-                .setColor('Red')
-                .setFooter({ text: `${interaction.user.username} | http.cat`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
-      
-            return interaction.reply({ embeds: [embed], ephemeral: true })
-        }
 
         const cryptoEmbed = new EmbedBuilder()
                 .setTitle('Meow~')

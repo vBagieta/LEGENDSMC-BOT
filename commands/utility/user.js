@@ -8,7 +8,7 @@ module.exports = {
             option.setName('user')
                 .setDescription('Wybierz użytkownika.')
                 .setRequired(true))
-        .addBooleanOption(option => option.setName('ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 	async execute(interaction) {
         
         const user = interaction.options.getUser('user');
@@ -20,12 +20,12 @@ module.exports = {
         const userJoined = new Date(member.joinedAt);
         const userJoinedTimestamp = time(userJoined, TimestampStyles.RelativeTime);
 
-        const ephemeral = interaction.options.getBoolean('ephemeral');
+        const ephemeral = interaction.options.getBoolean('notephemeral');
         
         if (ephemeral == null) {
             var ephemeralBoolean = true;
         } else {
-            var ephemeralBoolean = ephemeral
+            var ephemeralBoolean = !ephemeral
         }
 
         if (user && user.bot) { 
