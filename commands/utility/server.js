@@ -11,12 +11,7 @@ module.exports = {
         const guildDateCreatedTimestamp = time(guildDateCreated, TimestampStyles.RelativeTime);
 
         const ephemeral = interaction.options.getBoolean('notephemeral');
-        
-        if (ephemeral == null) {
-            var ephemeralBoolean = true;
-        } else {
-            var ephemeralBoolean = !ephemeral
-        }
+        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         const serverEmbed = new EmbedBuilder()
             .setTitle(interaction.guild.name)

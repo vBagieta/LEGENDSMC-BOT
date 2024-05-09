@@ -8,12 +8,7 @@ module.exports = {
     async execute(interaction) {
 
         const ephemeral = interaction.options.getBoolean('notephemeral');
-
-        if (ephemeral == null) {
-            var ephemeralBoolean = true;
-        } else {
-            var ephemeralBoolean = !ephemeral
-        }
+        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         const httpCodes = [
             '100',

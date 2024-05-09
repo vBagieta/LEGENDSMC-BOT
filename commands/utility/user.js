@@ -14,19 +14,11 @@ module.exports = {
         const user = interaction.options.getUser('user');
         const member = interaction.guild.members.cache.get(user.id);
 
-        const userCreated = new Date(user.createdAt);
-        const userCreatedTimestamp = time(userCreated, TimestampStyles.RelativeTime);
-
-        const userJoined = new Date(member.joinedAt);
-        const userJoinedTimestamp = time(userJoined, TimestampStyles.RelativeTime);
+        const userCreatedTimestamp = time(new Date(user.createdAt), TimestampStyles.RelativeTime);
+        const userJoinedTimestamp = time(new Date(member.joinedAt), TimestampStyles.RelativeTime);
 
         const ephemeral = interaction.options.getBoolean('notephemeral');
-        
-        if (ephemeral == null) {
-            var ephemeralBoolean = true;
-        } else {
-            var ephemeralBoolean = !ephemeral
-        }
+        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         if (user && user.bot) { 
             const errorEmbed = new EmbedBuilder()
