@@ -4,9 +4,11 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('httpcat')
         .setDescription('Wyświetl losowe zdjęcie kota, które odpowiada błędu HTTP.')
+        .addIntegerOption(option => option.setName('http-code').setDescription('Wybierz ręcznie kota, poprzez wybrany kod HTTP.'))
         .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
     async execute(interaction) {
 
+        const httpOptionCode = interaction.options.getInteger('http-code');
         const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
@@ -18,11 +20,16 @@ module.exports = {
             '502', '503', '504', '507', '508', '509', '510', '511', '521', '522', '523', '525', '530', '599',
         ]
 
-        const random = Math.floor(Math.random() * httpCodes.length);
-        const pickedCode = httpCodes[random];
-
+        let httpCode;
+        if (httpOptionCode !== null && httpCodes.includes(httpOptionCode.toString())) {
+            httpCode = httpOptionCode.toString();
+        } else {
+            const random = Math.floor(Math.random() * httpCodes.length);
+            httpCode = httpCodes[random];
+        };
+        
         let response = await fetch(
-            `https://http.cat/${pickedCode}`
+            `https://http.cat/${httpCode}`
           );
         const data = await response.text();
 
@@ -41,7 +48,7 @@ module.exports = {
                 .setColor('DarkBlue')
                 .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
                 .setTimestamp()
-                .setImage(`https://http.cat/${pickedCode}`)
+                .setImage(`https://http.cat/${httpCode}`)
         await interaction.reply({ embeds: [httpCatEmbed], ephemeral: ephemeralBoolean })  
     },
 };
