@@ -8,16 +8,16 @@ module.exports = {
             option.setName('user')
                 .setDescription('Wybierz użytkownika.')
                 .setRequired(true))
-        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 	async execute(interaction) {
-        
+
         const user = interaction.options.getUser('user');
         const member = interaction.guild.members.cache.get(user.id);
 
         const userCreatedTimestamp = time(new Date(user.createdAt), TimestampStyles.RelativeTime);
         const userJoinedTimestamp = time(new Date(member.joinedAt), TimestampStyles.RelativeTime);
 
-        const ephemeral = interaction.options.getBoolean('notephemeral');
+        const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         if (user && user.bot) { 

@@ -4,10 +4,10 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('shiba')
         .setDescription('Wyświetl losowe zdjęcie shiby.')
-        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
     async execute(interaction) {
 
-        const ephemeral = interaction.options.getBoolean('notephemeral');
+        const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         const response = await fetch(

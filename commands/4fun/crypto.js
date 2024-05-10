@@ -4,12 +4,12 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('crypto')
         .setDescription('Sprawdź cene kryptowaluty.')
-        .addStringOption(option => option.setName('crypto').setDescription('Podaj nazwe kryptowaluty.').setRequired(true))
-        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addStringOption(option => option.setName('crypto-name').setDescription('Podaj nazwe kryptowaluty.').setRequired(true))
+        .addBooleanOption(option => option.setName('note-phemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
     async execute(interaction) {
 
-        const crypto = interaction.options.getString('crypto');
-        const ephemeral = interaction.options.getBoolean('notephemeral');
+        const crypto = interaction.options.getString('crypto-name');
+        const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         let response = await fetch(

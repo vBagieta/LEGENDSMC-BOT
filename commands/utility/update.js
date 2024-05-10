@@ -4,12 +4,12 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('update')
         .setDescription('Sprawdź ostatnie aktualizacje bota.')
-        .addIntegerOption(option => option.setName('commits-count').setDescription('Wybierz liczbę ostatnich commitów.'))
-        .addBooleanOption(option => option.setName('notephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addIntegerOption(option => option.setName('commits-count').setDescription('Wybierz liczbę ostatnich commitów. (MAKSYMALNIE 9)'))
+        .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
     async execute(interaction) {
 
         const commitsCount = interaction.options.getInteger('commits-count');
-        const ephemeral = interaction.options.getBoolean('notephemeral');
+        const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         const response = await fetch(
