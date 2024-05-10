@@ -17,6 +17,6 @@ module.exports = {
             .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
             .setTimestamp()
         
-		await interaction.reply({ embeds: [helpEmbed], ephemeral: ephemeralBoolean })  
+		await interaction.reply({ embeds: [helpEmbed], ephemeral: ephemeralBoolean })
 	},
 };

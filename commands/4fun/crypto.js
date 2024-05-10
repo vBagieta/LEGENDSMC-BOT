@@ -1,7 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
-const isEmptyObject = (obj) => Object.keys(obj).length === 0;
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('crypto')
@@ -19,15 +17,15 @@ module.exports = {
           );
         const data = await response.json();
 
-        if (isEmptyObject(data)) {
-            const embed = new EmbedBuilder()
-                .setDescription(`API nie zwróciło daych, czy kryptowaluta \`${crypto}\` istnieje?`)
+        if (!response.ok || Object.keys(data).length === 0) {
+            const errorEmbed = new EmbedBuilder()
+                .setDescription(`Wystąpił błąd przy pobieraniu informacji o kryptowalucie \`${crypto}\``)
                 .setColor('Red')
-                .setFooter({ text: `${interaction.user.username} | api.coingecko.com`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
                 .setTimestamp()
       
-            return interaction.reply({ embeds: [embed], ephemeral: true })
-        }
+            return interaction.reply({ embeds: [errorEmbed], ephemeral: true })
+        };
 
         let usdPrice = data[crypto].usd;
         let euroPrice = data[crypto].eur;
@@ -36,7 +34,7 @@ module.exports = {
         const cryptoEmbed = new EmbedBuilder()
                 .setTitle(`Cena kryptowaluty ${crypto.toUpperCase()}:`)
                 .setColor('DarkBlue')
-                .setFooter({ text: `${interaction.user.username} | api.coingecko.com`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
                 .setTimestamp()
                 .addFields(
                     { name: 'USD', value: `${usdPrice}`, inline: true },

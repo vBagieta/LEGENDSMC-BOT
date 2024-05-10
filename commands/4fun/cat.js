@@ -14,14 +14,25 @@ module.exports = {
             `https://api.thecatapi.com/v1/images/search`
           );
         const data = await response.json();
+
+        if (!response.ok || Object.keys(data).length === 0) {
+            const errorEmbed = new EmbedBuilder()
+                .setDescription(`Wystąpił błąd przy pobieraniu wartości z API.`)
+                .setColor('Red')
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
+                .setTimestamp()
+      
+            return interaction.reply({ embeds: [errorEmbed], ephemeral: true })
+        };
+
         let catImage = data[0].url;
 
-        const cryptoEmbed = new EmbedBuilder()
+        const catEmbed = new EmbedBuilder()
                 .setTitle('Meow~')
                 .setColor('DarkBlue')
-                .setFooter({ text: `${interaction.user.username} | api.thecatapi.com`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
                 .setTimestamp()
                 .setImage(catImage)
-        await interaction.reply({ embeds: [cryptoEmbed], ephemeral: ephemeralBoolean })  
+        await interaction.reply({ embeds: [catEmbed], ephemeral: ephemeralBoolean })  
     },
 };
