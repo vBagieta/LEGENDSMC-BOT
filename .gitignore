@@ -1,2 +1,3 @@
 node_modules
 configs/main.json
+commands/moderation/mute.js
