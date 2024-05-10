@@ -1,7 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, codeBlock } = require('discord.js');
-const { fetch } = require('undici');
-
-const isEmptyObject = (obj) => Object.keys(obj).length === 0;
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -17,17 +14,6 @@ module.exports = {
             `https://api.thecatapi.com/v1/images/search`
           );
         const data = await response.json();
-
-        if (isEmptyObject(data)) {
-            const embed = new EmbedBuilder()
-                .setDescription(`API nie zwróciło daych.`)
-                .setColor('Red')
-                .setFooter({ text: `${interaction.user.username} | api.thecatapi.com`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
-      
-            return interaction.reply({ embeds: [embed], ephemeral: true })
-        }
-
         let catImage = data[0].url;
 
         const cryptoEmbed = new EmbedBuilder()

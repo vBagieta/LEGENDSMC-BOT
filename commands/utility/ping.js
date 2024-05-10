@@ -16,8 +16,8 @@ module.exports = {
             .setDescription('Bot działa! - Wpisz /help po listę komend')
             .addFields(
                 { name: 'PING', value: `${Date.now() - interaction.createdTimestamp}ms`, inline: true},
-                { name: 'DEVELOPER', value: '[Dołącz na serwer](https://discord.gg/KWuQ43Vf8u)', inline: true},
-                { name: 'SOURCECODE', value: '[GitHub](https://github.com/vBagieta/andrzejbot)', inline: true}
+                { name: 'DEVELOPER', value: '[Dołącz na serwer](https://discord.gg/aKbnfnh8kK)', inline: true},
+                { name: 'SOURCECODE', value: '[GitHub](https://github.com/vBagieta/LEGENDSMC-BOT)', inline: true}
             )
             .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
             .setTimestamp()

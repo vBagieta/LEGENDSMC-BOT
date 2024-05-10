@@ -1,5 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, codeBlock } = require('discord.js');
-const { fetch } = require('undici');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 const isEmptyObject = (obj) => Object.keys(obj).length === 0;
 
@@ -22,7 +21,7 @@ module.exports = {
 
         if (isEmptyObject(data)) {
             const embed = new EmbedBuilder()
-                .setDescription(`API nie zwróciło daych, czy kryptowaluta **${crypto}** istnieje?`)
+                .setDescription(`API nie zwróciło daych, czy kryptowaluta \`${crypto}\` istnieje?`)
                 .setColor('Red')
                 .setFooter({ text: `${interaction.user.username} | api.coingecko.com`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
                 .setTimestamp()

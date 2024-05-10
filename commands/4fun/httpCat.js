@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, codeBlock } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -89,7 +89,6 @@ module.exports = {
 
         const random = Math.floor(Math.random() * httpCodes.length);
         const pickedCode = httpCodes[random];
-
         const httpCatImage = `https://http.cat/${pickedCode}`
 
         const cryptoEmbed = new EmbedBuilder()
