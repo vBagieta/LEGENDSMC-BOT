@@ -24,11 +24,14 @@ module.exports = {
 
                         const logEmbed = new EmbedBuilder()
                             .setTitle('AntyInvite LOG')
+                            .setColor('Red')
                             .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                             .setDescription(`Użytkownik <@${message.author.id}> wysłał zaproszenie.`)
                             .addFields(
                                 { name: 'WIADOMOŚĆ', value: codeBlock(message.content) }
                             )
+                            .setTimestamp()
+                            .setFooter({ text: 'LEGENDSMC - System' })
                         message.guild.channels.cache.get(logsChannelId).send({ embeds: [logEmbed] })
 
                         setTimeout(() => {

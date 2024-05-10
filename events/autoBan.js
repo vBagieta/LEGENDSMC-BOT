@@ -20,11 +20,14 @@ module.exports = {
                 
                 const logEmbed = new EmbedBuilder()
                     .setTitle('AutoBan LOG')
+                    .setColor('Red')
                     .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                     .setDescription(`Użytkownik <@${message.author.id}> wysłał wiadomość na kanale zabezpieczającym.`)
                     .addFields(
                         { name: 'WIADOMOŚĆ', value: codeBlock(message.content) }
                     )
+                    .setTimestamp()
+                    .setFooter({ text: 'LEGENDSMC - System' })
                 message.guild.channels.cache.get(logsChannelId).send({ embeds: [logEmbed] })
             } catch (error) {
                 console.error(error);
