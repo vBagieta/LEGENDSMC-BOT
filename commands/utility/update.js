@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, time, TimestampStyles, codeBlock } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, time, TimestampStyles, codeBlock, italic } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -16,7 +16,29 @@ module.exports = {
             `https://api.github.com/repos/vBagieta/LEGENDSMC-BOT/commits`
         );
         const data = await response.json();
-        const latestCommits = data.slice(0, commitsCount || 5);
+
+        const embeds = [];
+
+        let latestCommits = [];
+        if (commitsCount !== null && data.slice(0, commitsCount).length > 9) {
+            latestCommits = data.slice(0, 9);
+            const introEmbed = new EmbedBuilder()
+                .setColor('Red')
+                .setTitle('Lista ostatnich 9 commitów:')
+                .setDescription(
+                    italic(`Możesz wyświetlić jedynie 9 ostatnich commitów w jeden interakcji.`) + '\n' +
+                    italic(`[Odwiedź tą stronę](https://github.com/vBagieta/LEGENDSMC-BOT/commits/main/), aby sprawdzić wszytskie commity.`)
+                )
+
+            embeds.push(introEmbed);
+        } else {
+            latestCommits = data.slice(0, commitsCount || 5);
+            const introEmbed = new EmbedBuilder()
+                .setColor('DarkBlue')
+                .setDescription(`Lista ostatnich ${commitsCount || 5} commitów:`)
+
+            embeds.push(introEmbed);
+        };
 
         const formatCommit = function(commit, index, total) {
             const commitDateTimestamp = time(new Date(commit.commit.author.date), TimestampStyles.RelativeTime)
@@ -26,19 +48,11 @@ module.exports = {
                 .addFields(
                     { name: 'ID', value: `[${commit.sha.slice(0, 7)}](${commit.html_url})` },
                     { name: 'CHANGELOG', value: codeBlock(commit.commit.message) },
-                    { name: 'CZAS', value: commitDateTimestamp },
+                    { name: 'DATE', value: commitDateTimestamp },
                 )
                 .setAuthor({ name: commit.author.login, iconURL: commit.author.avatar_url, url: commit.author.html_url })
                 .setTimestamp();
         };
-
-        const embeds = [];
-
-        const introEmbed = new EmbedBuilder()
-            .setColor('DarkBlue')
-            .setDescription(`Lista ostatnich ${commitsCount || 5} commitów:`);
-
-        embeds.push(introEmbed);
 
         for (let i = 0; i < latestCommits.length; i++) {
             const commit = latestCommits[i];
