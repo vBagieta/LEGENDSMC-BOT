@@ -2,29 +2,31 @@ const { ticketMessageChannelId } = require('../../configs/main.json');
 const { EmbedBuilder,
     SlashCommandBuilder,
     ActionRowBuilder,
-    StringSelectMenuBuilder
-    } = require('discord.js');
+    StringSelectMenuBuilder, 
+    PermissionFlagsBits
+} = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('ticket-send')
-		.setDescription('Wyślij panel ticketów na kanał.'),
+		.setName('send')
+		.setDescription('Wyślij panel zgłoszeń na kanał.')
+        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
 	async execute(interaction) {
 
         const ticketMenuEmbed = new EmbedBuilder()
-                .setTitle('Informacja dotycząca ticketów')
-                .setDescription('Aby stworzyć ticket, by móc szybko skontaktować się z Administracją'
+                .setTitle('Informacja dotycząca zgłoszeń')
+                .setDescription('Aby stworzyć zgłoszenie, by móc szybko skontaktować się z Administracją'
                 + 'naciśnij przycisk poniżej. Następnie postępuj zgodnie z instrukcją. Czas oczekiwania nie jest określony.'
-                + '\n\n**Wysyłanie bezsensownych ticketów bedzię karane banem permanentym na discordzie.**')
+                + '\n\n**Wysyłanie bezsensownych zgłoszeń bedzię karane banem permanentym na discordzie.**')
                 .setColor('Yellow')
-                .setFooter({ text: 'System ticketów' })
+                .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
 
         const ticketMenuSelector = new ActionRowBuilder()
             .setComponents(
             new StringSelectMenuBuilder()
                 .setCustomId("ticketMenuSelector")
-                .setPlaceholder("Wybierz Kategorię Ticketa!")
+                .setPlaceholder("Wybierz Kategorię zgłoszenia!")
                 .setOptions([
                     {
                         label: "Znalezłem błąd na serwerze",
@@ -44,6 +46,6 @@ module.exports = {
             embeds: [ticketMenuEmbed]
         });
 
-        await interaction.reply( { content: 'Pomyślnie wysłano ticket na kanał.', ephemeral: true} );
+        await interaction.reply( { content: 'Pomyślnie wysłano panel zgłoszenia.', ephemeral: true} );
 	}
 };

@@ -12,7 +12,7 @@ module.exports = {
         if (interaction.customId === 'confirmTicketDeletion') {
 
             interaction.update({
-                content: 'Ticket zostanie usunięty w ciągu 30 sekund.',
+                content: 'Zgłoszenie zostanie usunięty w ciągu 30 sekund.',
                 components: [],
                 ephemeral: true
             })
@@ -20,13 +20,19 @@ module.exports = {
             const timer = setTimeout(async () => {
                 const channel = interaction.client.channels.cache.get(interaction.channelId);
                 if (channel) {
-
                     const messages = await channel.messages.fetch({ limit: 10 });
 
                     const botMessages = messages.filter(isBot);
-                    botMessages.forEach(message => message.delete());
+                    botMessages.forEach(async message => {
+                        try {
+                            if (channel.messages.cache.has(message.id)) {
+                                await message.delete();
+                            }
+                        } catch (error) {
+                        }
+                    });
 
-                    let lastMessages = "**BRAK OSTATNICH WIADOMOŚĆI**";
+                    let lastMessages = "**Brak ostatnich wiadomośći**";
                     const userMessages = messages.filter(message => !isBot(message));
                     if (userMessages.size > 0) {
                         lastMessages = userMessages.map(msg => `${msg.author.tag}: ${msg.content}`).join('\n');
@@ -40,14 +46,14 @@ module.exports = {
                         .setTitle('Ticket LOG')
                         .setColor('Red')
                         .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                        .setDescription(`Ostatnie 10 wiadomości z kanału:\n${lastMessages}`)
+                        .setDescription(`Ostatnie 10 wiadomości ze zgłoszenia:\n${lastMessages}`)
                         .addFields(
-                            { name: 'AUTOR TICKETA', value: `<@${id}> (${author})` },
+                            { name: 'AUTOR', value: `<@${id}> (${author})` },
                             { name: 'ZAMKNIĘTO', value: `${time(new Date(), TimestampStyles.RelativeTime)}` },
-                            { name: 'PRZEZ', value: `<@${interaction.user.id}>` },
+                            { name: 'PRZEZ', value: `<@${interaction.user.id}>` }
                         )
                         .setTimestamp()
-                        .setFooter({ text: 'System ticketów' });
+                        .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
                 
                     interaction.guild.channels.cache.get(ticketLogsChannelId).send({ embeds: [deletedTicketEmbed] });
                 }
@@ -55,7 +61,7 @@ module.exports = {
             
         } else if (interaction.customId === 'cancelTicketDeletion') {
             interaction.update({
-                content: 'Anulowano zamykanie ticketa.',
+                content: 'Anulowano zamykanie zgłoszenia.',
                 components: [],
                 ephemeral: true
             });

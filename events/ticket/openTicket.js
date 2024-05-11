@@ -14,7 +14,7 @@ module.exports = {
         if (interaction.customId === 'ticketMenuSelector') {
 
             if (interaction.guild.channels.cache.find(channel => new RegExp(interaction.user.id).test(channel.name))) {
-                interaction.reply({ content: 'Możesz utworzyć tylko 1 ticket.', ephemeral: true})
+                interaction.reply({ content: 'Możesz mieć tylo jedno aktywne zgłoszenie.', ephemeral: true})
                 return;
 
             } else {
@@ -57,22 +57,22 @@ module.exports = {
                             ticketDescription = 'chce podzeilić się swoją propozycją!';
                         }
                     }
-                    interaction.reply({ content: `Pomyślnie stworzono ticket! <#${createdTicket.id}>`, ephemeral: true });
+                    interaction.reply({ content: `Pomyślnie utworzono zgłoszenie! <#${createdTicket.id}>`, ephemeral: true });
 
                     const ticketEmbed = new EmbedBuilder()
-                        .setTitle(`Ticket użytkownika ${interaction.user.username}`)
+                        .setTitle(`Zgłoszenie: ${interaction.user.username}`)
                         .setDescription(`<@${interaction.user.id}> ${ticketDescription}`)
                         .setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
                         .setColor('DarkBlue')
                         .setTimestamp()
-                        .setFooter({ text: 'System ticketów' })
+                        .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
 
                     interaction.guild.channels.cache.get(createdTicket.id).send({
                         components: [components],
                         embeds: [ticketEmbed]
                     });
                 } else {
-                    interaction.reply({ content: 'Nie udalo utworzyć się ticketa.', ephemeral: true })
+                    interaction.reply({ content: 'Nie udalo utworzyć się zgłoszenia.', ephemeral: true })
                 }
             }
         }

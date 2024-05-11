@@ -12,7 +12,7 @@ module.exports = {
 
             const confirmTicketDeletion = new ButtonBuilder()
 			    .setCustomId('confirmTicketDeletion')
-			    .setLabel('Potwierdzam zamknięcie ticketa.')
+			    .setLabel('Potwierdzam zamknięcie zgłoszenia.')
 			    .setStyle(ButtonStyle.Danger);
 
             const cancelTicketDeletion = new ButtonBuilder()
@@ -24,7 +24,7 @@ module.exports = {
                 .addComponents(confirmTicketDeletion, cancelTicketDeletion);
 
             await interaction.reply({
-                content: 'Czy napewno chcesz zamknać tego ticketa?',
+                content: 'Czy napewno chcesz zamknać to zgłoszenie?',
                 components: [components],
                 ephemeral: true
             });
