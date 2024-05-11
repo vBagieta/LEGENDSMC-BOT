@@ -1,5 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, StringSelectMenuBuilder } = require('discord.js');
 const { ticketMessageChannelId } = require('../../configs/main.json');
+const { EmbedBuilder,
+    SlashCommandBuilder,
+    ActionRowBuilder,
+    StringSelectMenuBuilder
+    } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -12,9 +16,9 @@ module.exports = {
                 .setTitle('Informacja dotycząca ticketów')
                 .setDescription('Aby stworzyć ticket, by móc szybko skontaktować się z Administracją'
                 + 'naciśnij przycisk poniżej. Następnie postępuj zgodnie z instrukcją. Czas oczekiwania nie jest określony.'
-                + '\n\n**Wysyłanie bezsensownych ticketów, bedzię karane banem permanentym na discordzie.**')
+                + '\n\n**Wysyłanie bezsensownych ticketów bedzię karane banem permanentym na discordzie.**')
                 .setColor('Yellow')
-                .setFooter({ text: 'LEGENDSMC - System ticketów' })
+                .setFooter({ text: 'System ticketów' })
 
         const ticketMenuSelector = new ActionRowBuilder()
             .setComponents(
@@ -23,13 +27,13 @@ module.exports = {
                 .setPlaceholder("Wybierz Kategorię Ticketa!")
                 .setOptions([
                     {
-                        label: "Znalezłem błąd",
+                        label: "Znalezłem błąd na serwerze",
                         description: "Pamiętaj, że za każde zgłoszenie błędu czeka Cię nagro...",
                         value: "ticketFirstOption"
                     },
                     {
                         label: "Mam propozcyję",
-                        description: "Propozycja.description",
+                        description: "Podziel się swoją propozycją z naszym teamem!",
                         value: "ticketSecondOption"
                     }
             ])
@@ -40,6 +44,6 @@ module.exports = {
             embeds: [ticketMenuEmbed]
         });
 
-        await interaction.reply( { content: 'Wysłano ticket na kanał.', ephemeral: true} );
+        await interaction.reply( { content: 'Pomyślnie wysłano ticket na kanał.', ephemeral: true} );
 	}
 };
