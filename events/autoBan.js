@@ -1,8 +1,8 @@
-const { EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
+const { Events, EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
 const { logsChannelId, autoBanChannelId } = require('../configs/main.json');
 
 module.exports = {
-    name: 'messageCreate',
+    name: Events.MessageCreate,
     async execute(message) {
 
         const member = await message.guild.members.fetch(message.author.id);
@@ -12,11 +12,11 @@ module.exports = {
 
         if (message.channel.id === autoBanChannelId) {
             try {
-                const userMessages = await message.channel.messages.fetch({ limit: 100 });
-                const userMessagesToday = userMessages.filter(msg => msg.author.id === message.author.id && isToday(msg.createdAt));
 
-                await message.channel.bulkDelete(userMessagesToday);
-                await message.guild.members.ban(message.author, { reason: '[AUTOMAT] Wysłałeś wiadomość na kanale zabezpieczającym.'} );
+                await message.guild.members.ban(message.author,{
+                    reason: '[AutoBan]',
+                    deleteMessageSeconds: 3600
+                  });
                 
                 const logEmbed = new EmbedBuilder()
                     .setTitle('AutoBan LOG')
@@ -28,6 +28,7 @@ module.exports = {
                     )
                     .setTimestamp()
                     .setFooter({ text: 'LEGENDSMC - System' })
+
                 message.guild.channels.cache.get(logsChannelId).send({ embeds: [logEmbed] })
             } catch (error) {
                 console.error(error);
@@ -35,10 +36,3 @@ module.exports = {
         }
     }
 };
-
-function isToday(date) {
-    const today = new Date();
-    return date.getDate() === today.getDate() &&
-           date.getMonth() === today.getMonth() &&
-           date.getFullYear() === today.getFullYear();
-}
