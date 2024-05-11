@@ -1,13 +1,12 @@
-const { EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
+const { Events, EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
 const { logsChannelId } = require('../configs/main.json');
 const guildConfig = require('../configs/guilds.json');
 
 module.exports = {
-    name: 'messageCreate',
+    name: Events.MessageCreate,
     async execute(message) {
 
-        if (!message.guild) return;
-        if (message.author.bot) return;
+        if (!message.guild || message.author.bot) return;
 
         const inviteMatch = message.content.match(/(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li|club)|discordapp\.com\/invite|discord\.com\/invite)\/.+[a-z]/gi);
         if (inviteMatch) {
