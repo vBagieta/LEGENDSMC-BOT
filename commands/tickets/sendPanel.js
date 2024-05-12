@@ -41,6 +41,14 @@ module.exports = {
             ])
         );
 
+        const channel = interaction.guild.channels.cache.get(ticketMessageChannelId);
+        const messages = await channel.messages.fetch({ limit: 1 });
+        
+        if (messages.size === 1) {
+            const lastMessage = messages.first();
+            await lastMessage.delete();
+        }
+
         await interaction.guild.channels.cache.get(ticketMessageChannelId).send({
             components: [ticketMenuSelector],
             embeds: [ticketMenuEmbed]
