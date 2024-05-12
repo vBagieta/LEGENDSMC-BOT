@@ -17,6 +17,16 @@ module.exports = {
         );
         const data = await response.json();
 
+        if (!response.ok || Object.keys(data).length === 0) {
+            const errorEmbed = new EmbedBuilder()
+                .setDescription(`Wystąpił błąd przy pobieraniu wartości z API.`)
+                .setColor('Red')
+                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
+                .setTimestamp()
+      
+            return interaction.reply({ embeds: [errorEmbed], ephemeral: true })
+        };
+
         const embeds = [];
 
         let latestCommits = [];
