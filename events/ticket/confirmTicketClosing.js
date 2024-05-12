@@ -12,10 +12,17 @@ module.exports = {
         if (interaction.customId === 'confirmTicketDeletion') {
 
             interaction.update({
-                content: 'Zgłoszenie zostanie usunięte w ciągu 30 sekund.',
+                content: 'Zgłoszenie zostanie zamknięte w ciągu 30 sekund.',
                 components: [],
                 ephemeral: true
             })
+
+            await interaction.guild.channels.cache.get(interaction.channelId).send(
+                `To zgłoszenie zostanie zamknięte ${time(new Date(new Date().setSeconds(new Date().getSeconds() + 30)), TimestampStyles.RelativeTime)}` +
+                `\nZainicjowano zamknięcie przez: <@${interaction.user.id}>`
+            )
+
+
 
             const timer = setTimeout(async () => {
                 const channel = interaction.client.channels.cache.get(interaction.channelId);
