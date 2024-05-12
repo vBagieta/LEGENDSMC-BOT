@@ -13,8 +13,9 @@ module.exports = {
 
         if (interaction.customId === 'ticketMenuSelector') {
 
-            if (interaction.guild.channels.cache.find(channel => new RegExp(interaction.user.id).test(channel.name))) {
-                interaction.reply({ content: 'Możesz mieć tylo jedno aktywne zgłoszenie.', ephemeral: true})
+            const channel = interaction.guild.channels.cache.find(channel => new RegExp(interaction.user.id).test(channel.name))
+            if (channel) {
+                interaction.reply({ content: `Możesz mieć tylo jedno aktywne zgłoszenie. Twoje aktualne zgłoszenie: <#${channel.id}>`, ephemeral: true})
                 return;
 
             } else {
@@ -52,18 +53,21 @@ module.exports = {
                     if (interaction.values && interaction.values.length > 0) {
                         const firstValue = interaction.values[0];
                         if (firstValue === 'ticketFirstOption') {
-                            ticketDescription = 'znalazł błąd na serwerze!';
+                            ticketDescription = 'Znalezienie błędu na serwerze.';
                         } else if (firstValue === 'ticketSecondOption') {
-                            ticketDescription = 'chce podzeilić się swoją propozycją!';
+                            ticketDescription = 'Podzielenie się propozycją.';
                         }
                     }
                     interaction.reply({ content: `Pomyślnie utworzono zgłoszenie! <#${createdTicket.id}>`, ephemeral: true });
 
                     const ticketEmbed = new EmbedBuilder()
                         .setTitle(`Zgłoszenie: ${interaction.user.username}`)
-                        .setDescription(`<@${interaction.user.id}> ${ticketDescription}`)
+                        .setDescription(`Użytkownik <@${interaction.user.id}> utworzył zgłoszenie.`)
                         .setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
                         .setColor('DarkBlue')
+                        .addFields(
+                            { name: 'Powód zgłoszenia', value: ticketDescription}
+                        )
                         .setTimestamp()
                         .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
 

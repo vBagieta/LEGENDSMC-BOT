@@ -22,8 +22,9 @@ module.exports = {
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
 
-        if (interaction.guild.channels.cache.find(channel => new RegExp(user.id).test(channel.name))) {
-            interaction.reply({ content: `Ten użytkownik ma już otwarte zgłoszenie.`, ephemeral: true})
+        const channel = interaction.guild.channels.cache.find(channel => new RegExp(user.id).test(channel.name))
+        if (channel) {
+            interaction.reply({ content: `Ten użytkownik ma już otwarte zgłoszenie. Aktualne zgłoszenie: <#${channel.id}>`, ephemeral: true})
 
         } else {
             const createdTicket = await interaction.guild.channels.create({
@@ -56,15 +57,16 @@ module.exports = {
 
             if (createdTicket) {
 
-                interaction.reply({ content: `Pomyślnie stworzono zgłoszenie dla <@${user.id}>! <#${createdTicket.id}>`, ephemeral: true });
+                interaction.reply({ content: `Pomyślnie utworzono zgłoszenie dla <@${user.id}>! <#${createdTicket.id}>`, ephemeral: true });
 
                 const ticketEmbed = new EmbedBuilder()
                     .setTitle(`Zgłoszenie: ${interaction.user.username}`)
-                    .setDescription(`Administrator <@${interaction.user.id}> utworzył dla użytkownika <@${user.id}> zgłoszenie.`
-                        + `\n\nPowód: ${reason}`
-                    )
-                    .setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                    .setDescription(`Administrator <@${interaction.user.id}> utworzył zgłoszenie dla użytkownika <@${user.id}>.`)
+                    .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) })
                     .setColor('DarkBlue')
+                    .addFields(
+                        { name: 'Powód zgłoszenia', value: reason}
+                    )
                     .setTimestamp()
                     .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
 

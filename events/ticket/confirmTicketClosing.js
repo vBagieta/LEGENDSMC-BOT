@@ -12,7 +12,7 @@ module.exports = {
         if (interaction.customId === 'confirmTicketDeletion') {
 
             interaction.update({
-                content: 'Zgłoszenie zostanie usunięty w ciągu 30 sekund.',
+                content: 'Zgłoszenie zostanie usunięte w ciągu 30 sekund.',
                 components: [],
                 ephemeral: true
             })
@@ -43,7 +43,7 @@ module.exports = {
                     const [author, id] = channel.name.split("-");
 
                     const deletedTicketEmbed = new EmbedBuilder()
-                        .setTitle('Ticket LOG')
+                        .setTitle('LOG Zgłoszeń')
                         .setColor('Red')
                         .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`Ostatnie 10 wiadomości ze zgłoszenia:\n${lastMessages}`)
