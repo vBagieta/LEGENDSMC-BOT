@@ -1,6 +1,6 @@
 const { Events, EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
-const { logsChannelId } = require('../configs/main.json');
-const guildConfig = require('../configs/guilds.json');
+const { logsChannelId } = require('../../configs/main.json');
+const guildConfig = require('../../configs/guilds.json');
 
 module.exports = {
     name: Events.MessageCreate,

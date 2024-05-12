@@ -17,9 +17,13 @@ PATH `./configs/main.json`
 {
     "token": "",
     "clientId": "",
-    "guildId": "",
+	"guildId": "",
     "logsChannelId": "",
-    "autoBanChannelId": ""
+    "autoBanChannelId": "",
+    "ticketMessageChannelId": "",
+    "ticketCategoryId": "",
+    "adminRoleId": "",
+    "ticketLogsChannelId": ""
 }
 ```
 
