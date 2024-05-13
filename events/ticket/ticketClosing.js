@@ -16,9 +16,7 @@ function isBot(message) {
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-
         if (interaction.customId === 'confirmTicketDeletionWithotReason') {
-
                 const channel = interaction.client.channels.cache.get(interaction.channelId);
                 if (channel) {
                     const messages = await channel.messages.fetch({ limit: 10 });
@@ -42,7 +40,6 @@ module.exports = {
                     await channel.delete();
                     
                     const [author, id] = channel.name.split("-");
-
                     const deletedTicketEmbed = new EmbedBuilder()
                         .setTitle('LOG Zgłoszeń')
                         .setColor('Red')
@@ -65,7 +62,6 @@ module.exports = {
                 ephemeral: true
             });
         } else if (interaction.customId === 'confirmTicketDeletionWithReason') {
-
             const ticketClosingModal = new ModalBuilder()
 			    .setCustomId('closeTicketWithReasonModal')
 			    .setTitle('Wpisz powód zamknięcia zgłoszenia');
@@ -78,11 +74,9 @@ module.exports = {
 	            .setMinLength(10);
 
             const components = new ActionRowBuilder().addComponents(reasonInput);
-
             ticketClosingModal.addComponents(components);
 
             await interaction.showModal(ticketClosingModal);
-
         }
     }
 };

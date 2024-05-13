@@ -12,9 +12,7 @@ function isBot(message) {
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-
     if (interaction.customId === 'closeTicketWithReasonModal') {
-
         await interaction.reply({ content: 'Zamykam zgłoszenie...', ephemeral: true });
 
         const timer = setTimeout(async () => {

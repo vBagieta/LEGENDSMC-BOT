@@ -1,13 +1,5 @@
 const { ticketCategoryId, adminRoleId } = require('../../configs/main.json')
-const { SlashCommandBuilder,
-    ChannelType,
-    PermissionsBitField,
-    EmbedBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    ActionRowBuilder,
-    PermissionFlagsBits
-} = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
