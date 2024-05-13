@@ -7,7 +7,6 @@ const { Events,
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-
         if (interaction.customId === 'closeTicketButton') {
 
             const confirmTicketDeletionWithReason = new ButtonBuilder()

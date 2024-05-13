@@ -14,12 +14,8 @@ module.exports = {
     async execute(interaction) {
 
     if (interaction.customId === 'closeTicketWithReasonModal') {
-        await interaction.reply({ content: 'Zgłoszenie zostanie zamknięte w ciągu 30 sekund.', ephemeral: true });
 
-        await interaction.guild.channels.cache.get(interaction.channelId).send(
-            `To zgłoszenie zostanie zamknięte ${time(new Date(new Date().setSeconds(new Date().getSeconds() + 30)), TimestampStyles.RelativeTime)}` +
-            `\nZainicjowano zamknięcie przez: <@${interaction.user.id}>`
-        )
+        await interaction.reply({ content: 'Zamykam zgłoszenie...', ephemeral: true });
 
         const timer = setTimeout(async () => {
             const channel = interaction.client.channels.cache.get(interaction.channelId);
@@ -63,7 +59,7 @@ module.exports = {
             
                 interaction.guild.channels.cache.get(ticketLogsChannelId).send({ embeds: [deletedTicketEmbed] });
             }
-        }, 30000);
-    }
+        }, 100);
+        }
     }
 };

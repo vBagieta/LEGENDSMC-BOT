@@ -17,9 +17,7 @@ module.exports = {
             if (channel) {
                 interaction.reply({ content: `Możesz mieć tylo jedno aktywne zgłoszenie. Twoje aktualne zgłoszenie: <#${channel.id}>`, ephemeral: true})
                 return;
-
             } else {
-
                 const createdTicket = await interaction.guild.channels.create({
                     name: `${interaction.user.username}-${interaction.user.id}`,
                     type: ChannelType.GuildText,

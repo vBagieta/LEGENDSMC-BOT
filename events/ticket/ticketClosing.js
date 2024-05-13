@@ -19,18 +19,6 @@ module.exports = {
 
         if (interaction.customId === 'confirmTicketDeletionWithotReason') {
 
-            interaction.update({
-                content: 'Zgłoszenie zostanie zamknięte w ciągu 30 sekund.',
-                components: [],
-                ephemeral: true
-            })
-
-            await interaction.guild.channels.cache.get(interaction.channelId).send(
-                `To zgłoszenie zostanie zamknięte ${time(new Date(new Date().setSeconds(new Date().getSeconds() + 30)), TimestampStyles.RelativeTime)}` +
-                `\nZainicjowano zamknięcie przez: <@${interaction.user.id}>`
-            )
-
-            const timer = setTimeout(async () => {
                 const channel = interaction.client.channels.cache.get(interaction.channelId);
                 if (channel) {
                     const messages = await channel.messages.fetch({ limit: 10 });
@@ -70,8 +58,6 @@ module.exports = {
                 
                     interaction.guild.channels.cache.get(ticketLogsChannelId).send({ embeds: [deletedTicketEmbed] });
                 }
-            }, 30000);
-            
         } else if (interaction.customId === 'cancelTicketDeletion') {
             interaction.update({
                 content: 'Anulowano zamykanie zgłoszenia.',

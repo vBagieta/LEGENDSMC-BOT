@@ -27,7 +27,8 @@ module.exports = {
                             channel.guild.channels.cache.get(ticketLogsChannelId).send({ embeds: [deletedTicketEmbed] });
                         }
                     }
-                });
+                }
+            );
         }
     }
 };
