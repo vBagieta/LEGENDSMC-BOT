@@ -13,7 +13,7 @@ module.exports = {
     async execute(interaction) {
         const amount = interaction.options.getInteger('amount');
 
-        if (amount <= 0 || amount > 99) {
+        if (amount <= 1 || amount > 99) {
             return interaction.reply({ content: 'Podaj liczbę od 1 do 99.', ephemeral: true });
         }
 
