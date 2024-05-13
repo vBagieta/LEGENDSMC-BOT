@@ -1,5 +1,13 @@
-const { Events, EmbedBuilder, time, TimestampStyles } = require('discord.js');
 const { ticketLogsChannelId } = require('../../configs/main.json');
+const { Events,
+    EmbedBuilder,
+    ModalBuilder,
+    TextInputBuilder,
+    TextInputStyle,
+    ActionRowBuilder,
+    time,
+    TimestampStyles
+} = require('discord.js');
 
 function isBot(message) {
     return message.author.bot;
@@ -9,7 +17,7 @@ module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
 
-        if (interaction.customId === 'confirmTicketDeletion') {
+        if (interaction.customId === 'confirmTicketDeletionWithotReason') {
 
             interaction.update({
                 content: 'Zgłoszenie zostanie zamknięte w ciągu 30 sekund.',
@@ -21,8 +29,6 @@ module.exports = {
                 `To zgłoszenie zostanie zamknięte ${time(new Date(new Date().setSeconds(new Date().getSeconds() + 30)), TimestampStyles.RelativeTime)}` +
                 `\nZainicjowano zamknięcie przez: <@${interaction.user.id}>`
             )
-
-
 
             const timer = setTimeout(async () => {
                 const channel = interaction.client.channels.cache.get(interaction.channelId);
@@ -72,6 +78,25 @@ module.exports = {
                 components: [],
                 ephemeral: true
             });
+        } else if (interaction.customId === 'confirmTicketDeletionWithReason') {
+
+            const ticketClosingModal = new ModalBuilder()
+			    .setCustomId('closeTicketWithReasonModal')
+			    .setTitle('Wpisz powód zamknięcia zgłoszenia');
+
+            const reasonInput = new TextInputBuilder()
+                .setCustomId('reasonInput')
+                .setLabel("Wpisz powód poniżej.")
+                .setStyle(TextInputStyle.Paragraph)
+                .setMaxLength(100)
+	            .setMinLength(10);
+
+            const components = new ActionRowBuilder().addComponents(reasonInput);
+
+            ticketClosingModal.addComponents(components);
+
+            await interaction.showModal(ticketClosingModal);
+
         }
     }
 };

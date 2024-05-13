@@ -10,21 +10,26 @@ module.exports = {
 
         if (interaction.customId === 'closeTicketButton') {
 
-            const confirmTicketDeletion = new ButtonBuilder()
-			    .setCustomId('confirmTicketDeletion')
-			    .setLabel('Potwierdzam zamknięcie zgłoszenia.')
+            const confirmTicketDeletionWithReason = new ButtonBuilder()
+			    .setCustomId('confirmTicketDeletionWithReason')
+			    .setLabel('Zamknij zgłoszenie z powodem.')
+			    .setStyle(ButtonStyle.Danger);
+
+            const confirmTicketDeletionWithotReason = new ButtonBuilder()
+			    .setCustomId('confirmTicketDeletionWithotReason')
+			    .setLabel('Zamknij zgłoszenie bez powodu.')
 			    .setStyle(ButtonStyle.Danger);
 
             const cancelTicketDeletion = new ButtonBuilder()
 			    .setCustomId('cancelTicketDeletion')
-			    .setLabel('Anuluj.')
+			    .setLabel('Anuluj zamykanie.')
 			    .setStyle(ButtonStyle.Success);
 
             const components = new ActionRowBuilder()
-                .addComponents(confirmTicketDeletion, cancelTicketDeletion);
+                .addComponents(confirmTicketDeletionWithReason, confirmTicketDeletionWithotReason, cancelTicketDeletion);
 
             await interaction.reply({
-                content: 'Czy napewno chcesz zamknać to zgłoszenie?',
+                content: 'Wybierz opcję zamykania zgłoszenia.',
                 components: [components],
                 ephemeral: true
             });
