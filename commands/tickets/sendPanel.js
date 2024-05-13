@@ -54,6 +54,6 @@ module.exports = {
             embeds: [ticketMenuEmbed]
         });
 
-        await interaction.reply( { content: 'Pomyślnie wysłano panel zgłoszenia.', ephemeral: true} );
+        await interaction.reply( { content: `Pomyślnie wysłano panel na kanał <#${channel.id}>.`, ephemeral: true} );
 	}
 };

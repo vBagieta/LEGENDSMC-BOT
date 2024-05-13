@@ -22,9 +22,14 @@ module.exports = {
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
 
+        if (user.bot) {
+            interaction.reply({ content: 'Nie możesz utworzyć zgłoszenia dla bota.', ephemeral: true })
+            return;
+        }
+
         const channel = interaction.guild.channels.cache.find(channel => new RegExp(user.id).test(channel.name))
         if (channel) {
-            interaction.reply({ content: `Ten użytkownik ma już otwarte zgłoszenie. Aktualne zgłoszenie: <#${channel.id}>`, ephemeral: true})
+            interaction.reply({ content: `Ten użytkownik ma już otwarte zgłoszenie.\nKanał aktywnego zgłoszenia <@${user.id}>: <#${channel.id}>`, ephemeral: true})
 
         } else {
             const createdTicket = await interaction.guild.channels.create({
@@ -57,7 +62,7 @@ module.exports = {
 
             if (createdTicket) {
 
-                interaction.reply({ content: `Pomyślnie utworzono zgłoszenie dla <@${user.id}>! <#${createdTicket.id}>`, ephemeral: true });
+                interaction.reply({ content: `Pomyślnie utworzono zgłoszenie dla <@${user.id}>!\nUtworzony kanał zgłoszenia: <#${createdTicket.id}>\nPowód zgłoszenia: \`${reason}\``, ephemeral: true });
 
                 const ticketEmbed = new EmbedBuilder()
                     .setTitle(`Zgłoszenie: ${interaction.user.username}`)

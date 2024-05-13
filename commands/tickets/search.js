@@ -22,10 +22,10 @@ module.exports = {
 
         const channel = interaction.guild.channels.cache.find(channel => new RegExp(user.id).test(channel.name))
         if (channel) {
-            interaction.reply({ content: `Znaleziono zgłoszenie dla <@${user.id}>: <#${channel.id}>`, ephemeral: true})
+            interaction.reply({ content: `Znaleziono zgłoszenie dla <@${user.id}>.\nKanał znalezionego zgłoszenia: <#${channel.id}>`, ephemeral: true})
 
         } else {
-            interaction.reply({ content: `Ten użytkownik nie ma aktywnego zgłoszenia.`, ephemeral: true})
+            interaction.reply({ content: `Użytkownik <@${user.id}> nie ma aktywnego zgłoszenia.`, ephemeral: true})
         }
 	}
 };
