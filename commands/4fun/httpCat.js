@@ -3,11 +3,10 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('httpcat')
-        .setDescription('Wyświetl losowe zdjęcie kota, które odpowiada błędu HTTP.')
-        .addIntegerOption(option => option.setName('http-code').setDescription('Wybierz ręcznie kota, poprzez wybrany kod HTTP.'))
+        .setDescription('Wyświetl losowe zdjęcie kota, które odpowiada błędowi HTTP.')
+        .addIntegerOption(option => option.setName('http-code').setDescription('Wybierz ręcznie kota, odpowiadającego wybranemu kodowi HTTP.'))
         .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
     async execute(interaction) {
-
         const httpOptionCode = interaction.options.getInteger('http-code');
         const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
@@ -18,37 +17,32 @@ module.exports = {
             '407', '408', '409', '410', '411', '412', '413', '414', '415', '416', '417', '418', '420', '421', '422',
             '423', '424', '425', '426', '428', '429', '431', '444', '450', '451', '497', '498', '499', '500', '501',
             '502', '503', '504', '507', '508', '509', '510', '511', '521', '522', '523', '525', '530', '599',
-        ]
+        ];
 
-        let httpCode;
-        if (httpOptionCode !== null && httpCodes.includes(httpOptionCode.toString())) {
-            httpCode = httpOptionCode.toString();
-        } else {
-            const random = Math.floor(Math.random() * httpCodes.length);
-            httpCode = httpCodes[random];
-        };
-        
-        let response = await fetch(
-            `https://http.cat/${httpCode}`
-          );
-        const data = await response.text();
+        let httpCode = httpOptionCode && httpCodes.includes(httpOptionCode.toString()) ? httpOptionCode.toString() : httpCodes[Math.floor(Math.random() * httpCodes.length)];
 
-        if (!response.ok || Object.keys(data).length === 0) {
-            const errorEmbed = new EmbedBuilder()
-                .setDescription(`Wystąpił błąd przy pobieraniu wartości z API.`)
-                .setColor('Red')
-                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
-      
-            return interaction.reply({ embeds: [errorEmbed], ephemeral: true })
-        };
+        try {
+            const response = await fetch(`https://http.cat/${httpCode}`);
+            if (!response.ok) throw new Error('Nie udało się pobrać danych z API.');
 
-        const httpCatEmbed = new EmbedBuilder()
+            const data = await response.text();
+
+            const httpCatEmbed = new EmbedBuilder()
                 .setTitle('Meow~')
                 .setColor('DarkBlue')
-                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
                 .setImage(`https://http.cat/${httpCode}`)
-        await interaction.reply({ embeds: [httpCatEmbed], ephemeral: ephemeralBoolean })  
+                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                .setTimestamp();
+
+            await interaction.reply({ embeds: [httpCatEmbed], ephemeral: ephemeralBoolean });
+        } catch (error) {
+            const errorEmbed = new EmbedBuilder()
+                .setDescription('Wystąpił błąd podczas pobierania danych z API.')
+                .setColor('Red')
+                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                .setTimestamp();
+
+            await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+        }
     },
 };

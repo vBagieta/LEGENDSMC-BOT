@@ -9,29 +9,31 @@ module.exports = {
         const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
-        let response = await fetch(
-            `https://api.thecatapi.com/v1/images/search`
-          );
-        const data = await response.json();
+        try {
+            const response = await fetch(`https://api.thecatapi.com/v1/images/search`);
+            if (!response.ok) throw new Error('Nie udało się pobrać danych z API.');
 
-        if (!response.ok || Object.keys(data).length === 0) {
-            const errorEmbed = new EmbedBuilder()
-                .setDescription(`Wystąpił błąd przy pobieraniu wartości z API.`)
-                .setColor('Red')
-                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
-      
-            return interaction.reply({ embeds: [errorEmbed], ephemeral: true })
-        };
+            const data = await response.json();
+            if (!data || !data.length) throw new Error('Brak danych z API.');
 
-        let catImage = data[0].url;
+            const catImage = data[0].url;
 
-        const catEmbed = new EmbedBuilder()
+            const catEmbed = new EmbedBuilder()
                 .setTitle('Meow~')
                 .setColor('DarkBlue')
-                .setFooter({ text: `${interaction.user.username}`, iconURL: `${interaction.user.displayAvatarURL({ dynamic: true })}` })
-                .setTimestamp()
                 .setImage(catImage)
-        await interaction.reply({ embeds: [catEmbed], ephemeral: ephemeralBoolean })  
+                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                .setTimestamp();
+
+            await interaction.reply({ embeds: [catEmbed], ephemeral: ephemeralBoolean });
+        } catch (error) {
+            const errorEmbed = new EmbedBuilder()
+                .setDescription(`Wystąpił błąd podczas pobierania danych z API: ${error.message}`)
+                .setColor('Red')
+                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                .setTimestamp();
+
+            await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+        }
     },
 };
