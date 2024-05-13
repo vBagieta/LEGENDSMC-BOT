@@ -1,13 +1,5 @@
 const { ticketLogsChannelId } = require('../../configs/main.json');
-const { Events,
-    EmbedBuilder,
-    ModalBuilder,
-    TextInputBuilder,
-    TextInputStyle,
-    ActionRowBuilder,
-    time,
-    TimestampStyles
-} = require('discord.js');
+const { Events, EmbedBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, time, TimestampStyles } = require('discord.js');
 
 function isBot(message) {
     return message.author.bot;
@@ -16,29 +8,27 @@ function isBot(message) {
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-        if (interaction.customId === 'confirmTicketDeletionWithotReason') {
-                const channel = interaction.client.channels.cache.get(interaction.channelId);
-                if (channel) {
+        if (interaction.customId === 'confirmTicketDeletionWithoutReason') {
+            const channel = interaction.client.channels.cache.get(interaction.channelId);
+            if (channel) {
+                try {
                     const messages = await channel.messages.fetch({ limit: 10 });
-
                     const botMessages = messages.filter(isBot);
-                    botMessages.forEach(async message => {
-                        try {
-                            if (channel.messages.cache.has(message.id)) {
-                                await message.delete();
-                            }
-                        } catch (error) {
-                        }
-                    });
 
-                    let lastMessages = "**Brak ostatnich wiadomośći**";
+                    for (const message of botMessages.values()) {
+                        if (channel.messages.cache.has(message.id)) {
+                            await message.delete();
+                        }
+                    }
+
+                    let lastMessages = "**Brak ostatnich wiadomości**";
                     const userMessages = messages.filter(message => !isBot(message));
                     if (userMessages.size > 0) {
                         lastMessages = userMessages.map(msg => `${msg.author.tag}: ${msg.content}`).join('\n');
                     }
 
                     await channel.delete();
-                    
+
                     const [author, id] = channel.name.split("-");
                     const deletedTicketEmbed = new EmbedBuilder()
                         .setTitle('LOG Zgłoszeń')
@@ -52,9 +42,12 @@ module.exports = {
                         )
                         .setTimestamp()
                         .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
-                
+
                     interaction.guild.channels.cache.get(ticketLogsChannelId).send({ embeds: [deletedTicketEmbed] });
+                } catch (error) {
+                    console.error(error);
                 }
+            }
         } else if (interaction.customId === 'cancelTicketDeletion') {
             interaction.update({
                 content: 'Anulowano zamykanie zgłoszenia.',
@@ -63,15 +56,15 @@ module.exports = {
             });
         } else if (interaction.customId === 'confirmTicketDeletionWithReason') {
             const ticketClosingModal = new ModalBuilder()
-			    .setCustomId('closeTicketWithReasonModal')
-			    .setTitle('Wpisz powód zamknięcia zgłoszenia');
+                .setCustomId('closeTicketWithReasonModal')
+                .setTitle('Wpisz powód zamknięcia zgłoszenia');
 
             const reasonInput = new TextInputBuilder()
                 .setCustomId('reasonInput')
                 .setLabel("Wpisz powód poniżej.")
                 .setStyle(TextInputStyle.Paragraph)
                 .setMaxLength(100)
-	            .setMinLength(10);
+                .setMinLength(10);
 
             const components = new ActionRowBuilder().addComponents(reasonInput);
             ticketClosingModal.addComponents(components);

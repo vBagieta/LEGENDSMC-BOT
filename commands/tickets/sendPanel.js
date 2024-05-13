@@ -1,59 +1,56 @@
 const { ticketMessageChannelId } = require('../../configs/main.json');
-const { EmbedBuilder,
-    SlashCommandBuilder,
-    ActionRowBuilder,
-    StringSelectMenuBuilder, 
-    PermissionFlagsBits
-} = require('discord.js');
+const { SlashCommandBuilder, StringSelectMenuBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('send')
-		.setDescription('Wyślij panel zgłoszeń na kanał.')
+    data: new SlashCommandBuilder()
+        .setName('send')
+        .setDescription('Wyślij panel zgłoszeń na kanał.')
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
-	async execute(interaction) {
-
+    async execute(interaction) {
+        const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
+        
         const ticketMenuEmbed = new EmbedBuilder()
-                .setTitle('Informacja dotycząca zgłoszeń')
-                .setDescription('Aby stworzyć zgłoszenie, by móc szybko skontaktować się z Administracją '
-                + 'wybierz z menu powód zgłoszenia. Czas oczekiwania nie jest określony.'
-                + '\n\n**Wysyłanie bezsensownych zgłoszeń bedzię karane banem permanentym na discordzie.**')
-                .setColor('Yellow')
-                .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
+            .setTitle('Informacja dotycząca zgłoszeń')
+            .setDescription(
+                'Aby stworzyć zgłoszenie i skontaktować się z Administracją, wybierz powód zgłoszenia. ' +
+                'Czas oczekiwania nie jest określony.\n\n' +
+                '**Wysyłanie bezsensownych zgłoszeń będzie karane banem permanentym na Discordzie.**'
+            )
+            .setColor('Yellow')
+            .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
 
         const ticketMenuSelector = new ActionRowBuilder()
             .setComponents(
-            new StringSelectMenuBuilder()
-                .setCustomId("ticketMenuSelector")
-                .setPlaceholder("Wybierz Kategorię zgłoszenia!")
-                .setOptions([
-                    {
-                        label: "Znalezłem błąd na serwerze",
-                        description: "Pamiętaj, że za każde zgłoszenie błędu czeka Cię nagro...",
-                        value: "ticketFirstOption"
-                    },
-                    {
-                        label: "Mam propozcyję",
-                        description: "Podziel się swoją propozycją!",
-                        value: "ticketSecondOption"
-                    }
-            ])
-        );
+                new StringSelectMenuBuilder()
+                    .setCustomId("ticketMenuSelector")
+                    .setPlaceholder("Wybierz Kategorię zgłoszenia!")
+                    .addOptions([
+                        {
+                            label: "Znalezłem błąd na serwerze",
+                            description: "Pamiętaj, że za każde zgłoszenie błędu czeka Cię nagro...",
+                            value: "ticketFirstOption"
+                        },
+                        {
+                            label: "Mam propozycję",
+                            description: "Podziel się swoją propozycją!",
+                            value: "ticketSecondOption"
+                        }
+                    ])
+            );
 
         const channel = interaction.guild.channels.cache.get(ticketMessageChannelId);
         const messages = await channel.messages.fetch({ limit: 1 });
         
         if (messages.size === 1) {
-            const lastMessage = messages.first();
-            await lastMessage.delete();
+            await messages.first().delete();
         }
 
-        await interaction.guild.channels.cache.get(ticketMessageChannelId).send({
+        await channel.send({
             components: [ticketMenuSelector],
             embeds: [ticketMenuEmbed]
         });
 
-        await interaction.reply( { content: `Pomyślnie wysłano panel na kanał <#${channel.id}>.`, ephemeral: true} );
-	}
+        await interaction.reply({ content: `Pomyślnie wysłano panel na kanał <#${channel.id}>.`, ephemeral: true });
+    }
 };

@@ -1,11 +1,5 @@
-const { ticketCategoryId, adminRoleId } = require('../../configs/main.json')
-const { Events,
-    ChannelType,
-    PermissionsBitField,
-    EmbedBuilder,
-    ButtonBuilder,
-    ButtonStyle,
-    ActionRowBuilder } = require('discord.js');
+const { ticketCategoryId, adminRoleId } = require('../../configs/main.json');
+const { Events, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -18,30 +12,24 @@ module.exports = {
                 interaction.reply({ content: `Możesz mieć tylo jedno aktywne zgłoszenie. Twoje aktualne zgłoszenie: <#${channel.id}>`, ephemeral: true})
                 return;
             } else {
+
+                const permissionOverwrites = [
+                    { id: interaction.guild.id, deny: [PermissionsBitField.Flags.ViewChannel] },
+                    { id: interaction.user.id, allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages] },
+                    { id: adminRoleId, allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages] },
+                ];
+
                 const createdTicket = await interaction.guild.channels.create({
                     name: `${interaction.user.username}-${interaction.user.id}`,
                     type: ChannelType.GuildText,
                     parent: ticketCategoryId,
-                    permissionOverwrites: [
-                        {
-                            id: interaction.guild.id,
-                            deny: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
-                        },
-                        {
-                            id: interaction.user.id,
-                            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
-                        },
-                        {
-                            id: adminRoleId,
-                            allow: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages],
-                        },
-                    ],
+                    permissionOverwrites,
                 });  
 
                 const closeTicketButton = new ButtonBuilder()
-			        .setCustomId('closeTicketButton')
-			        .setLabel('Zamknij')
-			        .setStyle(ButtonStyle.Danger);
+                    .setCustomId('closeTicketButton')
+                    .setLabel('Zamknij')
+                    .setStyle(ButtonStyle.Danger);
 
                 const components = new ActionRowBuilder()
                     .addComponents(closeTicketButton);
