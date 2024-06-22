@@ -1,26 +1,32 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder,
+    EmbedBuilder,
+    userMention } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Sprawdź status bota.')
-        .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addBooleanOption(option =>
+            option.setName('not-ephemeral')
+                .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+
     async execute(interaction) {
         const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         const pingEmbed = new EmbedBuilder()
-            .setTitle('Pong :ping_pong:')
+            .setTitle(`Pong - ${Date.now() - interaction.createdTimestamp}ms :ping_pong:`)
+            .setDescription(`${userMention(interaction.user.id)}, jestem aktywny! Wpisz </help:1254156301894815864> po listę komend.`)
             .setColor('DarkBlue')
-            .setDescription('Bot działa! - Wpisz /help po listę komend')
-            .addFields(
-                { name: 'PING', value: `${Date.now() - interaction.createdTimestamp}ms`, inline: true },
-                { name: 'DEVELOPER', value: '[Dołącz na serwer](https://discord.gg/aKbnfnh8kK)', inline: true },
-                { name: 'SOURCECODE', value: '[GitHub](https://github.com/vBagieta/LEGENDSMC-BOT)', inline: true }
-            )
-            .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-            .setTimestamp();
+            .setTimestamp()
+            .setFooter({
+                text: interaction.user.username,
+                iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+            });
 
-        await interaction.reply({ embeds: [pingEmbed], ephemeral: ephemeralBoolean });
+        await interaction.reply({
+            embeds: [pingEmbed],
+            ephemeral: ephemeralBoolean
+        });
     },
 };

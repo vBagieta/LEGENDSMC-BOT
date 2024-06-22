@@ -1,16 +1,33 @@
 const { ticketCategoryId, adminRoleId } = require('../../configs/main.json');
-const { Events, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const { Events,
+    ChannelType,
+    PermissionsBitField,
+    EmbedBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder, 
+    channelMention,
+    codeBlock } = require('discord.js');
 
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-
         if (interaction.customId === 'ticketMenuSelector') {
-
             const channel = interaction.guild.channels.cache.find(channel => new RegExp(interaction.user.id).test(channel.name))
+
             if (channel) {
-                interaction.reply({ content: `Możesz mieć tylo jedno aktywne zgłoszenie. Twoje aktualne zgłoszenie: <#${channel.id}>`, ephemeral: true})
-                return;
+                existingTicketEmbed = new EmbedBuilder()
+                    .setTitle('Możesz mieć tylo jedno aktywne zgłoszenie')
+                    .setDescription('Twoje aktualne zgłoszenie: ' + channelMention(channel.id))
+                    .setColor('Red')
+                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                    .setTimestamp();
+
+                return interaction.reply({
+                    embeds: [existingTicketEmbed],
+                    ephemeral: true
+                });
+
             } else {
 
                 const permissionOverwrites = [
@@ -35,7 +52,6 @@ module.exports = {
                     .addComponents(closeTicketButton);
 
                 if (createdTicket) {
-
                     if (interaction.values && interaction.values.length > 0) {
                         const firstValue = interaction.values[0];
                         if (firstValue === 'ticketFirstOption') {
@@ -44,16 +60,26 @@ module.exports = {
                             ticketDescription = 'Podzielenie się propozycją.';
                         }
                     }
-                    interaction.reply({ content: `Pomyślnie utworzono zgłoszenie! <#${createdTicket.id}>`, ephemeral: true });
+
+                    const createdTicketEmbed = new EmbedBuilder()
+                        .setTitle('Pomyślnie utworzono zgłoszenie!')
+                        .setDescription('Kanał twojego zgłoszenia: ' + channelMention(createdTicket.id))
+                        .setColor('DarkBlue')
+                        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                        .setTimestamp();
+
+                    interaction.reply({
+                        embeds: [createdTicketEmbed],
+                        ephemeral: true
+                    });
 
                     const ticketEmbed = new EmbedBuilder()
-                        .setTitle(`Zgłoszenie: ${interaction.user.username}`)
-                        .setDescription(`Użytkownik <@${interaction.user.id}> utworzył zgłoszenie.`)
+                        .setTitle(`Zgłoszenie ${interaction.user.username}:`)
                         .setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                        .setColor('DarkBlue')
                         .addFields(
-                            { name: 'Powód zgłoszenia', value: ticketDescription}
+                            { name: 'Powód zgłoszenia', value: codeBlock(ticketDescription) }
                         )
+                        .setColor('DarkBlue')
                         .setTimestamp()
                         .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
 
@@ -61,8 +87,19 @@ module.exports = {
                         components: [components],
                         embeds: [ticketEmbed]
                     });
+
                 } else {
-                    interaction.reply({ content: 'Nie udalo utworzyć się zgłoszenia.', ephemeral: true })
+                    
+                    const errorEmbed = new EmbedBuilder()
+                        .setTitle('Nie udalo utworzyć się zgłoszenia.')
+                        .setColor('Red')
+                        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                        .setTimestamp();
+
+                    interaction.reply({
+                        embeds: [errorEmbed],
+                        ephemeral: true
+                    })
                 }
             }
         }

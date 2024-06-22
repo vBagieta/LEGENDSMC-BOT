@@ -1,5 +1,10 @@
 const { ticketMessageChannelId } = require('../../configs/main.json');
-const { SlashCommandBuilder, StringSelectMenuBuilder, PermissionFlagsBits } = require('discord.js');
+const { EmbedBuilder,
+    ActionRowBuilder,
+    SlashCommandBuilder,
+    StringSelectMenuBuilder,
+    PermissionFlagsBits,
+    channelMention } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,8 +13,6 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
     async execute(interaction) {
-        const { EmbedBuilder, ActionRowBuilder } = require('discord.js');
-        
         const ticketMenuEmbed = new EmbedBuilder()
             .setTitle('Informacja dotycząca zgłoszeń')
             .setDescription(
@@ -51,6 +54,9 @@ module.exports = {
             embeds: [ticketMenuEmbed]
         });
 
-        await interaction.reply({ content: `Pomyślnie wysłano panel na kanał <#${channel.id}>.`, ephemeral: true });
+        await interaction.reply({
+            content: `Pomyślnie wysłano panel na kanał ` + channelMention(channel.id),
+            ephemeral: true 
+        });
     }
 };

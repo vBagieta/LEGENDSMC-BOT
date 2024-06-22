@@ -1,12 +1,27 @@
-const { SlashCommandBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, PermissionFlagsBits } = require('discord.js');
 const { ticketCategoryId, adminRoleId } = require('../../configs/main.json');
+const { SlashCommandBuilder,
+    ChannelType,
+    PermissionsBitField,
+    EmbedBuilder,
+    ButtonBuilder,
+    ButtonStyle,
+    ActionRowBuilder,
+    PermissionFlagsBits,
+    userMention,
+    channelMention,
+    codeBlock } = require('discord.js');
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('create')
 		.setDescription('Utwórz ręcznie zgłoszenie dla użytkownika.')
-        .addUserOption(option => option.setName('user').setDescription('Wybierz użytkownika.').setRequired(true))
-        .addStringOption(option => option.setName('reason').setDescription('Wpisz powód zgłoszenia.').setRequired(true))
+        .addUserOption(option =>
+            option.setName('user')
+            .setDescription('Wybierz użytkownika.')
+            .setRequired(true))
+        .addStringOption(option =>
+            option.setName('reason')
+                .setDescription('Wpisz powód zgłoszenia.').setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
 	async execute(interaction) {
@@ -14,12 +29,38 @@ module.exports = {
         const reason = interaction.options.getString('reason');
 
         if (user.bot) {
-            return interaction.reply({ content: 'Nie możesz utworzyć zgłoszenia dla bota.', ephemeral: true });
+            const botEmbed = new EmbedBuilder()
+                .setTitle('Nie możesz utworzyć zgłoszenia dla bota.')
+                .setColor('Red')
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
+
+            return interaction.reply({
+                embeds: [botEmbed],
+                ephemeral: true
+            });
         }
 
         const existingTicket = interaction.guild.channels.cache.find(channel => new RegExp(user.id).test(channel.name));
+
         if (existingTicket) {
-            return interaction.reply({ content: `Ten użytkownik ma już otwarte zgłoszenie.\nKanał aktywnego zgłoszenia <@${user.id}>: <#${existingTicket.id}>`, ephemeral: true});
+            const existingTicketEmbed = new EmbedBuilder()
+                .setTitle('Ten użytkownik ma już otwarte zgłoszenie.')
+                .setDescription(`Kanał otwartego zgłoszenia: ${channelMention(existingTicket.id)}`)
+                .setColor('Red')
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
+
+            return interaction.reply({
+                embeds: [existingTicketEmbed],
+                ephemeral: true
+            });
         }
 
         const permissionOverwrites = [
@@ -29,6 +70,7 @@ module.exports = {
         ];
 
         try {
+
             const createdTicket = await interaction.guild.channels.create({
                 name: `${user.username}-${user.id}`,
                 type: ChannelType.GuildText,
@@ -37,8 +79,8 @@ module.exports = {
             });
 
             const ticketEmbed = new EmbedBuilder()
-                .setTitle(`Zgłoszenie: ${interaction.user.username}`)
-                .setDescription(`Administrator <@${interaction.user.id}> utworzył zgłoszenie dla użytkownika <@${user.id}>.`)
+                .setTitle(`Zgłoszenie: ` + user.username)
+                .setDescription(`Administrator ${userMention(interaction.user.id)} utworzył zgłoszenie dla użytkownika ${userMention(user.id)}.`)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) })
                 .setColor('DarkBlue')
                 .addFields(
@@ -54,11 +96,36 @@ module.exports = {
 
             const components = new ActionRowBuilder().addComponents(closeTicketButton);
 
-            interaction.reply({ content: `Pomyślnie utworzono zgłoszenie dla <@${user.id}>!\nUtworzony kanał zgłoszenia: <#${createdTicket.id}>\nPowód zgłoszenia: \`${reason}\``, ephemeral: true });
+            const createdTicketEmbed = new EmbedBuilder()
+                .setDescription(`Pomyślnie utworzono zgłoszenie dla ${userMention(user.id)}!\nUtworzony kanał zgłoszenia: ${channelMention(createdTicket.id)}\nPowód zgłoszenia: \`${reason}\``)
+                .setColor('DarkBlue')
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
+
+            interaction.reply({ embeds: [createdTicketEmbed], ephemeral: true });
             interaction.guild.channels.cache.get(createdTicket.id).send({ components: [components], embeds: [ticketEmbed] });
+
         } catch (error) {
+
             console.error(error);
-            return interaction.reply({ content: 'Nie udało się utworzyć zgłoszenia.', ephemeral: true });
+
+            const errorEmbed = new EmbedBuilder()
+                .setTitle('Nie udało się utworzyć zgłoszenia.')
+                .setDescription('Błąd:\n' + codeBlock(error))
+                .setColor('Red')
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
+
+            return interaction.reply({
+                embeds: [errorEmbed],
+                ephemeral: true
+            });
         }
 	}
 };

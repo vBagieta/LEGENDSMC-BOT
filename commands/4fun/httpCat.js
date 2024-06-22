@@ -4,10 +4,16 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('httpcat')
         .setDescription('Wyświetl losowe zdjęcie kota, które odpowiada błędowi HTTP.')
-        .addIntegerOption(option => option.setName('http-code').setDescription('Wybierz ręcznie kota, odpowiadającego wybranemu kodowi HTTP.'))
-        .addBooleanOption(option => option.setName('not-ephemeral').setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+        .addIntegerOption(option =>
+            option.setName('http-code')
+                .setDescription('Wybierz ręcznie kota, odpowiadającego wybranemu kodowi HTTP.'))
+        .addBooleanOption(option =>
+            option.setName('not-ephemeral')
+                .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
+
     async execute(interaction) {
         const httpOptionCode = interaction.options.getInteger('http-code');
+
         const ephemeral = interaction.options.getBoolean('not-ephemeral');
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
@@ -22,6 +28,7 @@ module.exports = {
         let httpCode = httpOptionCode && httpCodes.includes(httpOptionCode.toString()) ? httpOptionCode.toString() : httpCodes[Math.floor(Math.random() * httpCodes.length)];
 
         try {
+
             const response = await fetch(`https://http.cat/${httpCode}`);
             if (!response.ok) throw new Error('Nie udało się pobrać danych z API.');
 
@@ -31,18 +38,32 @@ module.exports = {
                 .setTitle('Meow~')
                 .setColor('DarkBlue')
                 .setImage(`https://http.cat/${httpCode}`)
-                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                .setTimestamp();
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
 
-            await interaction.reply({ embeds: [httpCatEmbed], ephemeral: ephemeralBoolean });
+            await interaction.reply({
+                embeds: [httpCatEmbed],
+                ephemeral: ephemeralBoolean
+            });
+
         } catch (error) {
+
             const errorEmbed = new EmbedBuilder()
                 .setDescription('Wystąpił błąd podczas pobierania danych z API.')
                 .setColor('Red')
-                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                .setTimestamp();
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
 
-            await interaction.reply({ embeds: [errorEmbed], ephemeral: true });
+            await interaction.reply({
+                embeds: [errorEmbed],
+                ephemeral: true
+            });
         }
     },
 };
