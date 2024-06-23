@@ -1,5 +1,5 @@
 const { logsChannelId, autoBanChannelId } = require('../../configs/main.json');
-const { Events, EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
+const { Events, EmbedBuilder, PermissionFlagsBits } = require('discord.js');
 
 module.exports = {
     name: Events.MessageCreate,
