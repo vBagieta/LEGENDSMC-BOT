@@ -36,6 +36,5 @@ module.exports = {
         } catch (error) {
             console.log('Nie udało się zapisać usuniętej wiadomośći: ' + error)
         }
-        
     }
 };
