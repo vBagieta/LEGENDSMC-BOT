@@ -17,18 +17,16 @@ module.exports = {
                     });
 
                     const logEmbed = new EmbedBuilder()
-                        .setTitle('AutoBan LOG')
+                        .setTitle('AutoBan')
                         .setColor('Red')
                         .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
                         .setDescription(`Użytkownik ${message.author} został zbanowany za wysłanie wiadomości na kanale autoBan.`)
-                        .addFields(
-                            { name: 'WIADOMOŚĆ', value: codeBlock(message.content) }
-                        )
                         .setTimestamp()
                         .setFooter({ text: 'System', iconURL: message.guild.iconURL({ dynamic: true }) });
 
                     const logsChannel = message.guild.channels.cache.get(logsChannelId);
                     if (logsChannel) await logsChannel.send({ embeds: [logEmbed] });
+                    
                 } catch (error) {
                     console.error('Wystąpił błąd podczas banowania użytkownika:', error);
                 }

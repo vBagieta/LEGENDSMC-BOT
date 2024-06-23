@@ -1,6 +1,4 @@
-const { SlashCommandBuilder,
-    EmbedBuilder, 
-    codeBlock} = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, codeBlock} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,7 +6,8 @@ module.exports = {
         .setDescription('Sprawdź cenę kryptowaluty.')
         .addStringOption(option =>
             option.setName('crypto-name')
-                .setDescription('Podaj nazwę kryptowaluty.').setRequired(true))
+                .setDescription('Podaj nazwę kryptowaluty.')
+                .setRequired(true))
         .addBooleanOption(option =>
             option.setName('not-ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),

@@ -26,18 +26,23 @@ module.exports = {
         const ticketMenuSelector = new ActionRowBuilder()
             .setComponents(
                 new StringSelectMenuBuilder()
-                    .setCustomId("ticketMenuSelector")
-                    .setPlaceholder("Wybierz Kategorię zgłoszenia!")
+                    .setCustomId('ticketMenuSelector')
+                    .setPlaceholder('Wybierz Kategorię zgłoszenia!')
                     .addOptions([
                         {
-                            label: "Znalezłem błąd na serwerze",
-                            description: "Pamiętaj, że za każde zgłoszenie błędu czeka Cię nagro...",
-                            value: "ticketFirstOption"
+                            label: 'Znalezłem błąd na serwerze',
+                            description: 'Pamiętaj, że za każde zgłoszenie błędu czeka Cię nagro...',
+                            value: 'ticketFirstOption'
                         },
                         {
-                            label: "Mam propozycję",
-                            description: "Podziel się swoją propozycją!",
-                            value: "ticketSecondOption"
+                            label: 'Mam propozycję',
+                            description: 'Podziel się swoją propozycją!',
+                            value: 'ticketSecondOption'
+                        },
+                        {
+                            label: 'Inne',
+                            description: 'Wybierz tą opcje, jeżeli żadna inna nie pasuje.',
+                            value: 'ticketThirdOption'    
                         }
                     ])
             );

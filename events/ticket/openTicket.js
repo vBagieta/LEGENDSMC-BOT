@@ -5,9 +5,13 @@ const { Events,
     EmbedBuilder,
     ButtonBuilder,
     ButtonStyle,
-    ActionRowBuilder, 
+    ActionRowBuilder,
+    TextInputBuilder,
+    TextInputStyle,
     channelMention,
-    codeBlock } = require('discord.js');
+    codeBlock, 
+    userMention,
+    italic } = require('discord.js');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -53,11 +57,13 @@ module.exports = {
 
                 if (createdTicket) {
                     if (interaction.values && interaction.values.length > 0) {
-                        const firstValue = interaction.values[0];
-                        if (firstValue === 'ticketFirstOption') {
+                        const ticketReasons = interaction.values[0];
+                        if (ticketReasons === 'ticketFirstOption') {
                             ticketDescription = 'Znalezienie błędu na serwerze.';
-                        } else if (firstValue === 'ticketSecondOption') {
+                        } else if (ticketReasons === 'ticketSecondOption') {
                             ticketDescription = 'Podzielenie się propozycją.';
+                        } else if (ticketReasons === 'ticketThirdOption') {
+                            ticketDescription = 'Użytkownik ma inny powód zgłoszenia.'
                         }
                     }
 
@@ -65,8 +71,11 @@ module.exports = {
                         .setTitle('Pomyślnie utworzono zgłoszenie!')
                         .setDescription('Kanał twojego zgłoszenia: ' + channelMention(createdTicket.id))
                         .setColor('DarkBlue')
-                        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                        .setTimestamp();
+                        .setTimestamp()
+                        .setFooter({
+                            text: interaction.user.username,
+                            iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                        });
 
                     interaction.reply({
                         embeds: [createdTicketEmbed],
@@ -81,11 +90,14 @@ module.exports = {
                         )
                         .setColor('DarkBlue')
                         .setTimestamp()
-                        .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
+                        .setFooter({
+                            text: 'System zgłoszeń',
+                            iconURL: interaction.guild.iconURL({ dynamic: true })
+                        });
 
                     interaction.guild.channels.cache.get(createdTicket.id).send({
                         components: [components],
-                        embeds: [ticketEmbed]
+                        embeds: [ticketEmbed],
                     });
 
                 } else {
@@ -93,8 +105,11 @@ module.exports = {
                     const errorEmbed = new EmbedBuilder()
                         .setTitle('Nie udalo utworzyć się zgłoszenia.')
                         .setColor('Red')
-                        .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                        .setTimestamp();
+                        .setTimestamp()
+                        .setFooter({
+                            text: interaction.user.username,
+                            iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                        });
 
                     interaction.reply({
                         embeds: [errorEmbed],

@@ -14,23 +14,25 @@ const { SlashCommandBuilder,
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('create')
-		.setDescription('Utwórz ręcznie zgłoszenie dla użytkownika.')
+		.setDescription('Utwórz ręcznie zgłoszenie.')
         .addUserOption(option =>
             option.setName('user')
-            .setDescription('Wybierz użytkownika.')
-            .setRequired(true))
+                .setDescription('Wybierz użytkownika.')
+                .setRequired(true))
         .addStringOption(option =>
             option.setName('reason')
-                .setDescription('Wpisz powód zgłoszenia.').setRequired(true))
+                .setDescription('Wpisz powód zgłoszenia.')
+                .setRequired(true))
         .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
 	async execute(interaction) {
         const user = interaction.options.getUser('user');
         const reason = interaction.options.getString('reason');
 
-        if (user.bot) {
+        if (user.bot || interaction.user.id === user.id) {
             const botEmbed = new EmbedBuilder()
-                .setTitle('Nie możesz utworzyć zgłoszenia dla bota.')
+                .setTitle('Nie możesz utworzyć zgłoszenia dla tego użytkownika.')
+                .setDescription('Upewnij się, że nie wybierasz bota lub siebie!')
                 .setColor('Red')
                 .setTimestamp()
                 .setFooter({
@@ -70,7 +72,6 @@ module.exports = {
         ];
 
         try {
-
             const createdTicket = await interaction.guild.channels.create({
                 name: `${user.username}-${user.id}`,
                 type: ChannelType.GuildText,
@@ -79,7 +80,7 @@ module.exports = {
             });
 
             const ticketEmbed = new EmbedBuilder()
-                .setTitle(`Zgłoszenie: ` + user.username)
+                .setTitle('Zgłoszenie')
                 .setDescription(`Administrator ${userMention(interaction.user.id)} utworzył zgłoszenie dla użytkownika ${userMention(user.id)}.`)
                 .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) })
                 .setColor('DarkBlue')
@@ -87,7 +88,10 @@ module.exports = {
                     { name: 'Powód zgłoszenia', value: reason}
                 )
                 .setTimestamp()
-                .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
+                .setFooter({
+                    text: 'System zgłoszeń',
+                    iconURL: interaction.guild.iconURL({ dynamic: true })
+                });
 
             const closeTicketButton = new ButtonBuilder()
                 .setCustomId('closeTicketButton')
@@ -97,7 +101,11 @@ module.exports = {
             const components = new ActionRowBuilder().addComponents(closeTicketButton);
 
             const createdTicketEmbed = new EmbedBuilder()
-                .setDescription(`Pomyślnie utworzono zgłoszenie dla ${userMention(user.id)}!\nUtworzony kanał zgłoszenia: ${channelMention(createdTicket.id)}\nPowód zgłoszenia: \`${reason}\``)
+                .setDescription(
+                    `Pomyślnie utworzono zgłoszenie dla ${userMention(user.id)}!`
+                    + `\nUtworzony kanał zgłoszenia: ${channelMention(createdTicket.id)}`
+                    + `\nPowód zgłoszenia: \`${reason}\``
+                )
                 .setColor('DarkBlue')
                 .setTimestamp()
                 .setFooter({
@@ -105,8 +113,15 @@ module.exports = {
                     iconURL: interaction.user.displayAvatarURL({ dynamic: true })
                 });
 
-            interaction.reply({ embeds: [createdTicketEmbed], ephemeral: true });
-            interaction.guild.channels.cache.get(createdTicket.id).send({ components: [components], embeds: [ticketEmbed] });
+            interaction.reply({
+                embeds: [createdTicketEmbed],
+                ephemeral: true
+            });
+
+            interaction.guild.channels.cache.get(createdTicket.id).send({
+                components: [components],
+                embeds: [ticketEmbed]
+            });
 
         } catch (error) {
 

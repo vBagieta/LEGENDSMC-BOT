@@ -26,7 +26,10 @@ module.exports = {
             )
             .setColor('DarkBlue')
             .setTimestamp()
-            .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) });
+            .setFooter({
+                text: interaction.user.username,
+                iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+            });
 
         await interaction.reply({
             embeds: [serverEmbed],

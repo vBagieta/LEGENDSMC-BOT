@@ -1,6 +1,10 @@
 const { logsChannelId } = require('../../configs/main.json');
 const guildConfig = require('../../configs/guilds.json');
-const { Events, EmbedBuilder, PermissionFlagsBits, codeBlock } = require('discord.js');
+const { Events,
+    EmbedBuilder,
+    PermissionFlagsBits,
+    codeBlock,
+    userMention} = require('discord.js');
 
 module.exports = {
     name: Events.MessageCreate,
@@ -17,18 +21,18 @@ module.exports = {
             if (member.permissions.has(PermissionFlagsBits.KickMembers)) return;
 
             try {
-                const sentMessage = await message.channel.send(`<@${message.author.id}>, nie wysyłaj zaproszeń!`);
+                const sentMessage = await message.channel.send(`${userMention(message.author.id)}, nie wysyłaj zaproszeń!`);
 
                 const logEmbed = new EmbedBuilder()
-                    .setTitle('AntyInvite LOG')
+                    .setTitle('AntyInvite')
                     .setColor('Red')
                     .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`Użytkownik ${message.author} wysłał zaproszenie.`)
-                    .addFields(
-                        { name: 'WIADOMOŚĆ', value: codeBlock(message.content) }
-                    )
+                    .setDescription(`Użytkownik ${message.author} wysłał zaproszenie.\n\n**Wiadomość:**\n` + codeBlock(message.content))
                     .setTimestamp()
-                    .setFooter({ text: 'System', iconURL: message.guild.iconURL({ dynamic: true }) });
+                    .setFooter({
+                        text: 'System',
+                        iconURL: message.guild.iconURL({ dynamic: true })
+                    });
 
                 const logsChannel = message.guild.channels.cache.get(logsChannelId);
                 if (logsChannel) await logsChannel.send({ embeds: [logEmbed] });
@@ -36,12 +40,14 @@ module.exports = {
                 setTimeout(() => {
                     sentMessage.delete().catch(console.error);
                 }, 10000);
+
             } catch (error) {
                 console.error('Wystąpił błąd podczas wysyłania wiadomości lub logowania.', error);
             }
 
             try {
                 await message.delete();
+
             } catch (error) {
                 console.error('Wystąpił błąd podczas usuwania wiadomości.', error);
             }

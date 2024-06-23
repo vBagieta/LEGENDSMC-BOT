@@ -70,7 +70,8 @@ module.exports = {
 
             return interaction.reply({
                 embeds: [errorEmbed],
-                ephemeral: true });
+                ephemeral: true
+            });
         }
     },
 };

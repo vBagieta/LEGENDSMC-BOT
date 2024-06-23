@@ -4,14 +4,15 @@ const { SlashCommandBuilder,
     userMention,
     channelMention } = require('discord.js');
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('search')
-		.setDescription('Szukaj zgłoszeń.')
-        .addUserOption(option =>
-            option.setName('user')
-                .setDescription('Wybierz użytkownika.').setRequired(true))
-        .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
+    module.exports = {
+        data: new SlashCommandBuilder()
+            .setName('search')
+            .setDescription('Szukaj zgłoszeń.')
+            .addUserOption(option =>
+                option.setName('user')
+                    .setDescription('Wybierz użytkownika.')
+                    .setRequired(true))
+            .setDefaultMemberPermissions(PermissionFlagsBits.KickMembers),
 
 	async execute(interaction) {
         const user = interaction.options.getUser('user');
