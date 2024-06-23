@@ -37,8 +37,6 @@ module.exports = {
                     console.error('Wystąpił błąd podczas banowania użytkownika:', error);
                 }
             }
-        } catch (error) {
-            console.error('Wystąpił błąd podczas sprawdzania uprawnień użytkownika:', error);
-        }
+        } catch (error) {}
     }
 };
