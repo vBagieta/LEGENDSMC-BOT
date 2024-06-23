@@ -37,6 +37,10 @@ module.exports = {
                     console.error('Wystąpił błąd podczas banowania użytkownika:', error);
                 }
             }
-        } catch (error) {}
+        } catch (error) {
+            if (!message.webhookId) {
+                console.error('Wystąpił błąd podczas sprawdzania uprawnień:', error);
+            }
+        }
     }
 };
