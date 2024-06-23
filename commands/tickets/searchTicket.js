@@ -39,13 +39,16 @@ const { SlashCommandBuilder,
         if (channel) {
 
             const foundChannelEmbed = new EmbedBuilder()
-                .setDescription(`Znaleziono zgłoszenie dla ${userMention(user.id)}\nKanał znalezionego zgłoszenia: ` + channelMention(channel.id))
+                .setDescription(
+                    `Znaleziono zgłoszenie dla ${userMention(user.id)}`
+                    + `\nKanał znalezionego zgłoszenia: ` + channelMention(channel.id)
+                )
                 .setColor('DarkBlue')
                 .setTimestamp()
                 .setFooter({
                     text: interaction.user.username,
                     iconURL: interaction.user.displayAvatarURL({ dynamic: true })
-            });
+                });
 
             interaction.reply({
                 embeds: [foundChannelEmbed],
@@ -55,7 +58,9 @@ const { SlashCommandBuilder,
         } else {
 
             const noChannelEmbed = new EmbedBuilder()
-                .setDescription(`Użytkownik ${userMention(user.id)} nie ma aktywnego zgłoszenia.`)
+                .setDescription(
+                    `Użytkownik ${userMention(user.id)} nie ma aktywnego zgłoszenia.`
+                )
                 .setColor('Red')
                 .setTimestamp()
                 .setFooter({

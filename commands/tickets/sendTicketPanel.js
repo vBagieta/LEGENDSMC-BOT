@@ -21,7 +21,10 @@ module.exports = {
                 '**Wysyłanie bezsensownych zgłoszeń będzie karane banem permanentym na Discordzie.**'
             )
             .setColor('Yellow')
-            .setFooter({ text: 'System zgłoszeń', iconURL: interaction.guild.iconURL({ dynamic: true }) });
+            .setFooter({
+                text: 'System zgłoszeń',
+                iconURL: interaction.guild.iconURL({ dynamic: true })
+            });
 
         const ticketMenuSelector = new ActionRowBuilder()
             .setComponents(

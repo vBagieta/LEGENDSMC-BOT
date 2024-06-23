@@ -26,8 +26,14 @@ module.exports = {
                 const logEmbed = new EmbedBuilder()
                     .setTitle('AntyInvite')
                     .setColor('Red')
-                    .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
-                    .setDescription(`Użytkownik ${message.author} wysłał zaproszenie.\n\n**Wiadomość:**\n` + codeBlock(message.content))
+                    .setAuthor({
+                        name: message.author.username,
+                        iconURL: message.author.displayAvatarURL({ dynamic: true })
+                    })
+                    .setDescription(
+                        `Użytkownik ${message.author} wysłał zaproszenie.\n\n`
+                        + `**Wiadomość:**\n` + codeBlock(message.content)
+                    )
                     .setTimestamp()
                     .setFooter({
                         text: 'System',

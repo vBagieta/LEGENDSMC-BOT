@@ -19,10 +19,16 @@ module.exports = {
                     const logEmbed = new EmbedBuilder()
                         .setTitle('AutoBan')
                         .setColor('Red')
-                        .setAuthor({ name: message.author.username, iconURL: message.author.displayAvatarURL({ dynamic: true }) })
+                        .setAuthor({
+                            name: message.author.username,
+                            iconURL: message.author.displayAvatarURL({ dynamic: true })
+                        })
                         .setDescription(`Użytkownik ${message.author} został zbanowany za wysłanie wiadomości na kanale autoBan.`)
                         .setTimestamp()
-                        .setFooter({ text: 'System', iconURL: message.guild.iconURL({ dynamic: true }) });
+                        .setFooter({
+                            text: 'System', iconURL:
+                            message.guild.iconURL({ dynamic: true })
+                        });
 
                     const logsChannel = message.guild.channels.cache.get(logsChannelId);
                     if (logsChannel) await logsChannel.send({ embeds: [logEmbed] });

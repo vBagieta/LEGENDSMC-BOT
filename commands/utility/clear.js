@@ -16,7 +16,7 @@ module.exports = {
     async execute(interaction) {
         const amount = interaction.options.getInteger('amount');
 
-        if (amount < 0 || amount >= 100) {
+        if (amount < 0 || amount > 100) {
 
             const integerEmbed = new EmbedBuilder()
                 .setTitle('Podaj liczbę od 1 do 100.')
@@ -34,9 +34,8 @@ module.exports = {
         }
 
         try {
-
             await interaction.channel.bulkDelete(amount);
-
+            
             const succesEmbed = new EmbedBuilder()
                 .setTitle(`Usunięto ${amount} ostatnich wiadomości.`)
                 .setColor('DarkBlue')

@@ -57,15 +57,20 @@ module.exports = {
 
             const deletedTicketEmbed = new EmbedBuilder()
                 .setTitle('Zgłoszenie')
-                .setColor('Red')
-                .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                .setDescription(`Ostatnie **10** wiadomości ze zgłoszenia:\n${lastMessages}`)
+                .setDescription(
+                    `Ostatnie **10** wiadomości ze zgłoszenia:\n${lastMessages}`
+                )
+                .setAuthor({
+                    name: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                })
                 .addFields(
                     { name: 'Autor', value: userMention(id) },
                     { name: 'Zamknięto', value: time(new Date(), TimestampStyles.RelativeTime) },
                     { name: 'Przez', value: userMention(interaction.user.id) },
                     { name: 'Powód', value: codeBlock(reason) },
                 )
+                .setColor('Red')
                 .setTimestamp()
                 .setFooter({
                     text: 'System zgłoszeń',

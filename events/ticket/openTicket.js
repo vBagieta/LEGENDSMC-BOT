@@ -84,7 +84,10 @@ module.exports = {
 
                     const ticketEmbed = new EmbedBuilder()
                         .setTitle(`Zgłoszenie ${interaction.user.username}:`)
-                        .setAuthor({ name: interaction.user.globalName, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                        .setAuthor({
+                            name: interaction.user.globalName,
+                            iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                        })
                         .addFields(
                             { name: 'Powód zgłoszenia', value: codeBlock(ticketDescription) }
                         )

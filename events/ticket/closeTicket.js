@@ -154,7 +154,10 @@ module.exports = {
                     const deletedTicketEmbed = new EmbedBuilder()
                         .setTitle('Zgłoszenie')
                         .setColor('Red')
-                        .setAuthor({ name: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
+                        .setAuthor({
+                            name: interaction.user.username,
+                            iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                        })
                         .setDescription(`Ostatnie **10** wiadomości ze zgłoszenia:\n${lastMessages}`)
                         .addFields(
                             { name: 'Autor', value: userMention(id) },

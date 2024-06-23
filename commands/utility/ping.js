@@ -15,8 +15,13 @@ module.exports = {
         const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
 
         const pingEmbed = new EmbedBuilder()
-            .setTitle(`Pong - ${Date.now() - interaction.createdTimestamp}ms :ping_pong:`)
-            .setDescription(`${userMention(interaction.user.id)}, jestem aktywny! Wpisz </help:1254156301894815864> po listę komend.`)
+            .setTitle(
+                `Pong - ${Date.now() - interaction.createdTimestamp}ms :ping_pong:`
+            )
+            .setDescription(
+                `${userMention(interaction.user.id)}, jestem aktywny! `
+                + 'Wpisz </help:1254411711205736597> po listę komend.'
+            )
             .setColor('DarkBlue')
             .setTimestamp()
             .setFooter({

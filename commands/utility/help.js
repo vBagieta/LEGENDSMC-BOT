@@ -30,10 +30,11 @@ module.exports = {
             const adminEmbed = new EmbedBuilder()
                 .setTitle('Lista komend - ADMIN')
                 .setDescription(
-                    '**System zgłoszeń**\n' +
-                    '</send:1254156301894815862> - Wyślij ponownie panel zgłoszeń.\n' +
-                    '</create:1254156301894815860> - Utworz ręcznie zgłoszenie dla użytkownika.\n' +
-                    '</search:1254156301894815861> - Szukaj zgłoszeń ręcznie.'
+                    '**System zgłoszeń**\n'
+                    + '</send:1254411711205736595> - Wyślij ponownie panel zgłoszeń.\n'
+                    + '</create:1254411711205736593> - Utworz ręcznie zgłoszenie dla użytkownika.\n'
+                    + '</search:1254411711205736594> - Szukaj zgłoszeń ręcznie.\n'
+                    + '</close:1254411711205736592> - Zamknij ręcznie zgłoszenie'
                 )
                 .setColor('Red');
 

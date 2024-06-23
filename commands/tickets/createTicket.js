@@ -81,12 +81,18 @@ module.exports = {
 
             const ticketEmbed = new EmbedBuilder()
                 .setTitle('Zgłoszenie')
-                .setDescription(`Administrator ${userMention(interaction.user.id)} utworzył zgłoszenie dla użytkownika ${userMention(user.id)}.`)
-                .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ dynamic: true }) })
-                .setColor('DarkBlue')
+                .setDescription(
+                    `Administrator ${userMention(interaction.user.id)} `
+                    + `utworzył zgłoszenie dla użytkownika ${userMention(user.id)}.`
+                )
+                .setAuthor({
+                    name: user.username, iconURL:
+                    user.displayAvatarURL({ dynamic: true })
+                })
                 .addFields(
                     { name: 'Powód zgłoszenia', value: reason}
                 )
+                .setColor('DarkBlue')
                 .setTimestamp()
                 .setFooter({
                     text: 'System zgłoszeń',

@@ -29,13 +29,13 @@ module.exports = {
 
             const cryptoEmbed = new EmbedBuilder()
                 .setTitle(`Cena kryptowaluty ${crypto.toUpperCase()}:`)
-                .setColor('DarkBlue')
-                .setTimestamp()
                 .addFields(
                     { name: 'USD', value: `${usd}`, inline: true },
                     { name: 'EUR', value: `${eur}`, inline: true },
                     { name: 'PLN', value: `${pln}`, inline: true }
                 )
+                .setColor('DarkBlue')
+                .setTimestamp()
                 .setFooter({
                     text: interaction.user.username,
                     iconURL: interaction.user.displayAvatarURL({ dynamic: true })

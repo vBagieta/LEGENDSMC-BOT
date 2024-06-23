@@ -49,7 +49,11 @@ module.exports = {
                         { name: 'Opis', value: codeBlock(commit.commit.message) },
                         { name: 'Data', value: commitDateTimestamp },
                     )
-                    .setAuthor({ name: commit.author.login, iconURL: commit.author.avatar_url, url: commit.author.html_url })
+                    .setAuthor({
+                        name: commit.author.login,
+                        iconURL: commit.author.avatar_url,
+                        url: commit.author.html_url
+                    })
                     .setColor('DarkBlue')
                     .setTimestamp()
                     .setFooter({

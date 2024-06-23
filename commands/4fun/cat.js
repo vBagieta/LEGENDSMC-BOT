@@ -39,11 +39,16 @@ module.exports = {
         } catch (error) {
 
             const errorEmbed = new EmbedBuilder()
-                .setTitle('Wystąpił błąd podczas pobierania danych z API')
+                .setTitle(
+                    'Wystąpił błąd podczas pobierania danych z API'
+                )
                 .setDescription('Błąd:\n' + codeBlock(error.message))
                 .setColor('Red')
-                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) })
-                .setTimestamp();
+                .setTimestamp()
+                .setFooter({
+                    text: interaction.user.username,
+                    iconURL: interaction.user.displayAvatarURL({ dynamic: true })
+                });
 
             await interaction.reply({
                 embeds: [errorEmbed],

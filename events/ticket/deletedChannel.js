@@ -18,7 +18,7 @@ module.exports = {
                 if (entry && !entry.executor.bot) {
                     const deletedTicketEmbed = new EmbedBuilder()
                         .setTitle('Zgłoszenie')
-                        .setColor('DarkRed')
+                        .setColor('Red')
                         .setDescription(
                             `${userMention(entry.executor.id)} usunął ręcznie kanał zgłoszenia.`
                             + `\nWłaściciel zgłoszenia: ` + userMention(id)
