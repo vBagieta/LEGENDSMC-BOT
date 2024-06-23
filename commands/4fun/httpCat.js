@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, codeBlock } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -28,11 +28,6 @@ module.exports = {
         let httpCode = httpOptionCode && httpCodes.includes(httpOptionCode.toString()) ? httpOptionCode.toString() : httpCodes[Math.floor(Math.random() * httpCodes.length)];
 
         try {
-            const response = await fetch(`https://http.cat/${httpCode}`);
-            if (!response.ok) throw new Error('Nie udało się pobrać danych z API.');
-
-            const data = await response.text();
-
             const httpCatEmbed = new EmbedBuilder()
                 .setTitle('Meow~')
                 .setColor('DarkBlue')
@@ -52,6 +47,7 @@ module.exports = {
 
             const errorEmbed = new EmbedBuilder()
                 .setDescription('Wystąpił błąd podczas pobierania danych z API.')
+                .setDescription('Błąd: ' + codeBlock(error))
                 .setColor('Red')
                 .setTimestamp()
                 .setFooter({
