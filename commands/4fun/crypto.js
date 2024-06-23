@@ -9,14 +9,12 @@ module.exports = {
                 .setDescription('Podaj nazwę kryptowaluty.')
                 .setRequired(true))
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
         const crypto = interaction.options.getString('crypto-name');
-
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         try {
             const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${crypto}&vs_currencies=usd,eur,pln`);
@@ -43,7 +41,7 @@ module.exports = {
 
             await interaction.reply({
                 embeds: [cryptoEmbed],
-                ephemeral: ephemeralBoolean
+                ephemeral: ephemeral
             });
 
         } catch (error) {

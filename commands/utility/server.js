@@ -5,14 +5,12 @@ module.exports = {
         .setName('server')
         .setDescription('Sprawdź informacje o serwerze.')
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
         const guildDateCreatedTimestamp = time(interaction.guild.createdAt, TimestampStyles.RelativeTime);
-
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         const serverEmbed = new EmbedBuilder()
             .setTitle(interaction.guild.name)
@@ -33,7 +31,7 @@ module.exports = {
 
         await interaction.reply({
             embeds: [serverEmbed],
-            ephemeral: ephemeralBoolean
+            ephemeral: ephemeral
         });
     },
 };

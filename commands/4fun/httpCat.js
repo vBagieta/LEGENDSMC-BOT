@@ -8,14 +8,12 @@ module.exports = {
             option.setName('http-code')
                 .setDescription('Wybierz ręcznie kota, odpowiadającego wybranemu kodowi HTTP.'))
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
         const httpOptionCode = interaction.options.getInteger('http-code');
-
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         const httpCodes = [
             '100', '101', '102', '103', '200', '201', '202', '203', '204', '205', '206', '207', '208', '214', '226',

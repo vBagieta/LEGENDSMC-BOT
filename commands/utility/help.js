@@ -7,12 +7,11 @@ module.exports = {
         .setName('help')
         .setDescription('Wyświetl listę komend.')
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
         const member = interaction.guild.members.cache.get(interaction.user.id);
 
         const userEmbed = new EmbedBuilder()
@@ -47,7 +46,7 @@ module.exports = {
 
             await interaction.reply({
                 embeds: [userEmbed],
-                ephemeral: ephemeralBoolean
+                ephemeral: ephemeral
             });
         }
     },

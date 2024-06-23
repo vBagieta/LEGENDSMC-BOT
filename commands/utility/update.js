@@ -13,14 +13,12 @@ module.exports = {
             option.setName('commits-count')
                 .setDescription('Wybierz liczbę ostatnich commitów. (MAKSYMALNIE 9)'))
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
         const commitsCount = interaction.options.getInteger('commits-count');
-
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         try {
 
@@ -66,7 +64,7 @@ module.exports = {
 
             await interaction.reply({
                 embeds: embeds,
-                ephemeral: ephemeralBoolean
+                ephemeral: ephemeral
             });
 
         } catch (error) {

@@ -14,7 +14,7 @@ module.exports = {
                 .setDescription('Wybierz użytkownika.')
                 .setRequired(true))
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
@@ -24,8 +24,7 @@ module.exports = {
         const userCreatedTimestamp = time(user.createdAt, TimestampStyles.RelativeTime);
         const userJoinedTimestamp = time(member.joinedAt, TimestampStyles.RelativeTime);
 
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         if (user && user.bot) {
 
@@ -63,7 +62,7 @@ module.exports = {
 
             await interaction.reply({
                 embeds: [userEmbed],
-                ephemeral: ephemeralBoolean
+                ephemeral: ephemeral
             });
         }
     },

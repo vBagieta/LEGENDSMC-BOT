@@ -6,12 +6,11 @@ module.exports = {
         .setDescription('Wyświetl losowe zdjęcie kota.')
         .addBooleanOption(option =>
             option
-                .setName('not-ephemeral')
+                .setName('ephemeral')
         .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         try {
             const response = await fetch(`https://api.thecatapi.com/v1/images/search`);
@@ -33,7 +32,7 @@ module.exports = {
 
             await interaction.reply({
                 embeds: [catEmbed],
-                ephemeral: ephemeralBoolean
+                ephemeral: ephemeral
             });
 
         } catch (error) {

@@ -7,12 +7,11 @@ module.exports = {
         .setName('ping')
         .setDescription('Sprawdź status bota.')
         .addBooleanOption(option =>
-            option.setName('not-ephemeral')
+            option.setName('ephemeral')
                 .setDescription('Czy wiadomość ma być widoczna dla wszystkich?')),
 
     async execute(interaction) {
-        const ephemeral = interaction.options.getBoolean('not-ephemeral');
-        const ephemeralBoolean = ephemeral === null ? true : !ephemeral;
+        const ephemeral = interaction.options.getBoolean('ephemeral') ?? true;
 
         const pingEmbed = new EmbedBuilder()
             .setTitle(
@@ -31,7 +30,7 @@ module.exports = {
 
         await interaction.reply({
             embeds: [pingEmbed],
-            ephemeral: ephemeralBoolean
+            ephemeral: ephemeral
         });
     },
 };
