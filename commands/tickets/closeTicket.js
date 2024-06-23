@@ -30,6 +30,24 @@ module.exports = {
         const reason = interaction.options.getString('reason');
 
         const channel = interaction.guild.channels.cache.find(channel => new RegExp(user.id).test(channel.name));
+
+        if (!channel || user.bot || user.id === interaction.user.id) {
+
+            const noTicketEmbed = new EmbedBuilder()
+                .setTitle('Nie znaleziono zgłoszenia')
+                .setColor('Red')
+                .setTimestamp()
+                .setFooter({
+                    text: 'System zgłoszeń',
+                    iconURL: interaction.guild.iconURL({ dynamic: true })
+                });
+
+            return interaction.reply({
+                embeds: [noTicketEmbed],
+                ephemeral: true
+            })
+        }
+        
         const [owner, id] = channel.name.split('-');
 
         try {
