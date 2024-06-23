@@ -80,7 +80,7 @@ module.exports = {
             });
 
             const ticketEmbed = new EmbedBuilder()
-                .setTitle('Zgłoszenie')
+                .setTitle(`Zgłoszenie ${user.username}:`)
                 .setDescription(
                     `Administrator ${userMention(interaction.user.id)} `
                     + `utworzył zgłoszenie dla użytkownika ${userMention(user.id)}.`
@@ -90,7 +90,7 @@ module.exports = {
                     user.displayAvatarURL({ dynamic: true })
                 })
                 .addFields(
-                    { name: 'Powód zgłoszenia', value: reason}
+                    { name: 'Powód zgłoszenia', value: codeBlock(reason)}
                 )
                 .setColor('DarkBlue')
                 .setTimestamp()
@@ -107,10 +107,13 @@ module.exports = {
             const components = new ActionRowBuilder().addComponents(closeTicketButton);
 
             const createdTicketEmbed = new EmbedBuilder()
+                .setTitle('Pomyślnie utworzono zgłoszenie.')
                 .setDescription(
-                    `Pomyślnie utworzono zgłoszenie dla ${userMention(user.id)}!`
-                    + `\nUtworzony kanał zgłoszenia: ${channelMention(createdTicket.id)}`
-                    + `\nPowód zgłoszenia: \`${reason}\``
+                    `Utworzono zgłoszenie dla ${userMention(user.id)} `
+                    + `na kanale ${channelMention(createdTicket.id)}`
+                )
+                .addFields(
+                    { name: 'Powód zgłoszenia', value: codeBlock(reason) }
                 )
                 .setColor('DarkBlue')
                 .setTimestamp()

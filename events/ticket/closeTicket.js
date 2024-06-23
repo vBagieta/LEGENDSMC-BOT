@@ -70,10 +70,9 @@ module.exports = {
 
                     await channel.delete();
 
-                    const [author, id] = channel.name.split("-");
+                    const [owner, id] = channel.name.split("-");
                     const deletedTicketEmbed = new EmbedBuilder()
-
-                        .setTitle('Zgłoszenie')
+                        .setTitle(`Zgłoszenie ${owner}:`)
                         .setColor('Red')
                         .setAuthor({
                             name: interaction.user.username,
@@ -155,7 +154,7 @@ module.exports = {
                     const reason = interaction.fields.getTextInputValue('reasonInput');
 
                     const deletedTicketEmbed = new EmbedBuilder()
-                        .setTitle('Zgłoszenie')
+                        .setTitle(`Zgłoszenie ${owner}:`)
                         .setColor('Red')
                         .setAuthor({
                             name: interaction.user.username,

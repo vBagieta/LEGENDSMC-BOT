@@ -74,7 +74,7 @@ module.exports = {
             await channel.delete();
 
             const deletedTicketEmbed = new EmbedBuilder()
-                .setTitle('Zgłoszenie')
+                .setTitle(`Zgłoszenie ${owner}:`)
                 .setDescription(
                     `Ostatnie **10** wiadomości ze zgłoszenia:\n${lastMessages}`
                 )
