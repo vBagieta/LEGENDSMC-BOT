@@ -48,7 +48,7 @@ module.exports = {
                             value: 'ticketQuestionOption'    
                         },
                         {
-                            label: 'Inny problem',
+                            label: 'Inne',
                             description: 'Żadna z powyższych kategorii nie pasuje.',
                             value: 'ticketOtherOption'    
                         }

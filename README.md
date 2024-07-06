@@ -1,7 +1,8 @@
 
 # LEGENDSMC-BOT
 
-Another discord bot designed for LEGENDSMC Discord Server 
+Another discord bot designed for LEGENDSMC Discord Server
+
 [Main files provided by discord.js Guide](https://discordjs.guide/creating-your-bot/)
 
 ## Requirements
