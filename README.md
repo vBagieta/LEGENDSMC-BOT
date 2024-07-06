@@ -25,7 +25,8 @@ PATH `./configs/main.json`
     "ticketMessageChannelId": "",
     "ticketCategoryId": "",
     "adminRoleId": "",
-    "ticketLogsChannelId": ""
+    "ticketLogsChannelId": "",
+    "rulesChannelId": ""
 }
 ```
 
