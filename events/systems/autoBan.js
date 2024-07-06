@@ -39,7 +39,7 @@ module.exports = {
             }
         } catch (error) {
             if (!message.webhookId) {
-                console.error('Wystąpił błąd podczas sprawdzania uprawnień:', error);
+                console.error(error);
             }
         }
     }

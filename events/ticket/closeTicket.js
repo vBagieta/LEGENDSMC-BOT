@@ -113,7 +113,7 @@ module.exports = {
                 .setCustomId('reasonInput')
                 .setLabel("Wpisz powód poniżej.")
                 .setStyle(TextInputStyle.Paragraph)
-                .setMaxLength(100)
+                .setMaxLength(300)
                 .setMinLength(10);
 
             const components = new ActionRowBuilder().addComponents(reasonInput);

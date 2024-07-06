@@ -1,5 +1,5 @@
 const { logsChannelId } = require('../../configs/main.json');
-const guildConfig = require('../../configs/guilds.json');
+const guildConfig = require('../../configs/allowedInvites.json');
 const { Events,
     EmbedBuilder,
     PermissionFlagsBits,
@@ -55,7 +55,7 @@ module.exports = {
                 await message.delete();
 
             } catch (error) {
-                console.error('Wystąpił błąd podczas usuwania wiadomości.', error);
+                console.error(error);
             }
         }
     },

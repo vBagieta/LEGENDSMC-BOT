@@ -34,7 +34,7 @@ module.exports = {
             message.guild.channels.cache.get(logsChannelId).send({ embeds: [deletedMessageEmbed] });
 
         } catch (error) {
-            console.log('Nie udało się zapisać usuniętej wiadomośći: ' + error)
+            console.log(error)
         }
     }
 };

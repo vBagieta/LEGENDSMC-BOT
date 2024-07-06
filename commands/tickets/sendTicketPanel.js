@@ -14,11 +14,11 @@ module.exports = {
 
     async execute(interaction) {
         const ticketMenuEmbed = new EmbedBuilder()
-            .setTitle('Informacja dotycząca zgłoszeń')
+            .setTitle('LegendsMC: System zgłoszeń')
             .setDescription(
-                'Aby stworzyć zgłoszenie i skontaktować się z Administracją, wybierz powód zgłoszenia. ' +
-                'Czas oczekiwania nie jest określony.\n\n' +
-                '**Wysyłanie bezsensownych zgłoszeń będzie karane banem permanentym na Discordzie.**'
+                'Napotkałeś problem? Chcesz zgłosić błąd? A może masz pytanie?\n' +
+                'Wybierz kategorię zgłoszenia poniżej, aby nasza administracja mogła Ci pomóc!\n\n' +
+                '**Wysyłanie bezsensownych zgłoszeń jest karane.**'
             )
             .setColor('Yellow')
             .setFooter({
@@ -33,19 +33,24 @@ module.exports = {
                     .setPlaceholder('Wybierz Kategorię zgłoszenia!')
                     .addOptions([
                         {
-                            label: 'Znalezłem błąd na serwerze',
-                            description: 'Pamiętaj, że za każde zgłoszenie błędu czeka Cię nagro...',
-                            value: 'ticketFirstOption'
+                            label: 'Znalazłem błąd',
+                            description: 'Napotkałeś na problem podczas korzystania z naszych serwisów.',
+                            value: 'ticketIssueOption',
                         },
                         {
-                            label: 'Mam propozycję',
-                            description: 'Podziel się swoją propozycją!',
-                            value: 'ticketSecondOption'
+                            label: 'Chce podzielić się propozcyją!',
+                            description: 'Chcesz podzielić się propozycją z naszym zespołem',
+                            value: 'ticketPropositionOption'
                         },
                         {
-                            label: 'Inne',
-                            description: 'Wybierz tą opcje, jeżeli żadna inna nie pasuje.',
-                            value: 'ticketThirdOption'    
+                            label: 'Mam pytanie!',
+                            description: 'Masz pytanie dotyczące naszych serwisów.',
+                            value: 'ticketQuestionOption'    
+                        },
+                        {
+                            label: 'Inny problem',
+                            description: 'Żadna z powyższych kategorii nie pasuje.',
+                            value: 'ticketOtherOption'    
                         }
                     ])
             );

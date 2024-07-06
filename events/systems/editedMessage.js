@@ -35,7 +35,7 @@ module.exports = {
             oldMessage.guild.channels.cache.get(logsChannelId).send({ embeds: [editedMessageEmbed] });
 
         } catch (error) {
-            console.log('Nie udało się zapisać edycji wiadomości: ' + error)
+            console.log(error)
         }
     }
 };

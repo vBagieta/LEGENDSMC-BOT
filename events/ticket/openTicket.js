@@ -56,15 +56,20 @@ module.exports = {
                     .addComponents(closeTicketButton);
 
                 if (createdTicket) {
-                    if (interaction.values && interaction.values.length > 0) {
-                        const ticketReasons = interaction.values[0];
-                        if (ticketReasons === 'ticketFirstOption') {
-                            ticketDescription = 'Znalezienie błędu na serwerze.';
-                        } else if (ticketReasons === 'ticketSecondOption') {
-                            ticketDescription = 'Podzielenie się propozycją.';
-                        } else if (ticketReasons === 'ticketThirdOption') {
-                            ticketDescription = 'Użytkownik ma inny powód zgłoszenia.'
-                        }
+                    const ticketReasons = interaction.values[0];
+                    switch (ticketReasons) {
+                        case 'ticketIssueOption':
+                            ticketDescription = 'Napotkanie problemu podczas korzystania z serwisów.';
+                            break;
+                        case 'ticketPropositionOption':
+                            ticketDescription = 'Chęć podzielenia się pomysłem z zespołem.';
+                            break;
+                        case 'ticketQuestionOption':
+                            ticketDescription = 'Chęć zadania pytania.';
+                            break;
+                        case 'ticketOtherOption':
+                            ticketDescription = '(Brak pasującej kategorii.)';
+                            break;
                     }
 
                     const createdTicketEmbed = new EmbedBuilder()
