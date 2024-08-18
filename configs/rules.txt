@@ -1,0 +1,21 @@
+## **Art. 1 Postanowienia ogólne**
+**§1** Każdy użytkownik w chwili dołączenia na serwer automatycznie akceptuje poniższy regulamin.
+**§2** Nie znajomość regulaminu lub jego nie zrozumienie nie zwalnia z jego nie przestrzegania.
+**§3** Administrator może ukarać gracza za przewinienia nie uwzględnione w tym regulaminie, jeżeli uzna to za stosowne.
+**§4** Administracja zastrzega sobie prawo do edycji regulaminu bez wcześniejszego poinformowania użytkowników.
+**§5** Ten regulamin jest własnością serwera LEGENDSMC.PL.
+
+## **Art. 2 Serwer Discord**
+**§1** Na kanałach tekstowych jest obowiązek przestrzegania zasad kultury osobistej.
+**§2** Zakaz publikowania wrażliwych danych m.in: adres zamieszkania, zdjęcia.
+**§3** Zakaz obrażania, prowokowania itp. innych użytkowników serwera.
+**§4** Zakaz publikowania treści powszechnie uważanych za nieetyczne.
+**§5** Zakaz podszywania się pod administrację serwera oraz jego użytkowników.
+**§6** Zakaz reklamowania innych serwerów gry Minecraft.
+**§7** Użytkownik jak i administracja jest zobowiązany do przestrzegania zasad Discorda.
+
+## **Art. 3 Serwer Minecraft**
+**§1** Gracz ma obowiązek zgłaszać wszelkie błędy na serwerze.
+**§2** Zakaz obrażania, prowokowania itp. innych graczy.
+**§3** Zakaz używania niedozwolonych modyfikacji, cheatów czy klientów.
+**§4** Zakaz podszywania się pod administrację serwera oraz jego graczy.
